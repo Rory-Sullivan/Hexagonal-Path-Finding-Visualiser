@@ -65,8 +65,66 @@ class Node {
             }
         }
 
-        this.neighbours = neighbours;
+        // remove any neighbours that are actually walls
+        let notWallNeighbours = [];
+        neighbours.forEach(node => {
+            if (!node.isWall) {
+                notWallNeighbours.push(node);
+            }
+        });
+
+        this.neighbours = notWallNeighbours;
     }
 }
 
-function dijkstra(grid, startNode, endNode) {}
+/**
+ * Makes a graph of nodes from our grid matrix.  Grid matrix values of 0
+ * represent a normal node, values of 1 represent a wall.
+ */
+function makeGraph(grid) {
+    let graph = [];
+
+    for (let i = 0; i < grid.length; i++) {
+        let row = grid[i];
+        for (let j = 0; j < row.length; j++) {
+            const a = row[j];
+            let node = new Node(i, j, graph);
+
+            if (a === 1) {
+                node.isWall = true;
+            }
+
+            row.push(node);
+        }
+        graph.push(row);
+    }
+
+    // Assign neighbours to all nodes
+    for (let i = 0; i < graph.length; i++) {
+        const row = graph[i];
+        for (let j = 0; j < row.length; j++) {
+            let node = row[j];
+            node.getNeighbours();
+        }
+    }
+
+    return graph;
+}
+
+/**
+ * Implements our Dijkstra algorithm.  Inputs are our hexagonal grid matrix, an
+ * array representing the start node position and an array representing the end
+ * node position.
+ */
+function dijkstra(grid, startNode, endNode) {
+    let graph = makeGraph(grid);
+
+    if (startNode === endNode) {
+        throw 'Start node cannot be end node.';
+    }
+
+    graph[startNode[0]][startNode[1]].isStart = true;
+    graph[startNode[0]][startNode[1]].d = 0;
+
+    graph[endNode[0]][endNode[1]].isEnd = true;
+}

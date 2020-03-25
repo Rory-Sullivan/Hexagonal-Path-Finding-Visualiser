@@ -91,5 +91,25 @@ describe('Tests for the Node() class', function() {
             expect(node.neighbours).to.include(n2);
             expect(node.neighbours).to.have.lengthOf(2);
         });
+
+        it('Test wall functionality', function() {
+            let node = graph[1][1];
+            graph[2][2].isWall = true;
+            node.getNeighbours();
+
+            let n1 = graph[0][1];
+            let n2 = graph[2][1];
+            let n3 = graph[1][0];
+            let n4 = graph[2][0];
+            let n5 = graph[1][2];
+            expect(node.neighbours).to.include(n1);
+            expect(node.neighbours).to.include(n2);
+            expect(node.neighbours).to.include(n3);
+            expect(node.neighbours).to.include(n4);
+            expect(node.neighbours).to.include(n5);
+            expect(node.neighbours).to.have.lengthOf(5);
+
+            graph[2][2].isWall = false;
+        });
     });
 });
