@@ -21,10 +21,14 @@ class Node {
     getNeighbours() {
         let neighbours = [];
 
+        // for readability
+        let row = this.row;
+        let col = this.col;
+
         // top and bottom
-        if (this.row === 0) {
+        if (row === 0) {
             neighbours.push(this.graph[row + 1][col]);
-        } else if (this.row === this.graph.length - 1) {
+        } else if (row === this.graph.length - 1) {
             neighbours.push(this.graph[row - 1][col]);
         } else {
             neighbours.push(this.graph[row - 1][col]);
@@ -32,30 +36,30 @@ class Node {
         }
 
         // left
-        if (this.col !== 0) {
-            if (this.col % 2 === 0) {
+        if (col !== 0) {
+            if (col % 2 === 0) {
                 neighbours.push(this.graph[row][col - 1]);
-                if (this.row !== 0) {
+                if (row !== 0) {
                     neighbours.push(this.graph[row - 1][col - 1]);
                 }
             } else {
                 neighbours.push(this.graph[row][col - 1]);
-                if (this.row !== this.graph[row].length - 1) {
+                if (row !== this.graph[row].length - 1) {
                     neighbours.push(this.graph[row + 1][col - 1]);
                 }
             }
         }
 
         // right
-        if (this.col !== this.graph[row].length - 1) {
-            if (this.col % 2 === 0) {
+        if (col !== this.graph[row].length - 1) {
+            if (col % 2 === 0) {
                 neighbours.push(this.graph[row][col + 1]);
-                if (this.row !== 0) {
+                if (row !== 0) {
                     neighbours.push(this.graph[row - 1][col + 1]);
                 }
             } else {
                 neighbours.push(this.graph[row][col + 1]);
-                if (this.row !== this.graph[row].length - 1) {
+                if (row !== this.graph[row].length - 1) {
                     neighbours.push(this.graph[row + 1][col + 1]);
                 }
             }
