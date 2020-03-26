@@ -114,8 +114,7 @@ function makeGraph(grid) {
  */
 function dijkstra(grid, startNode, endNode) {
     let graph = makeGraph(grid);
-    let knownDist = []; // List of nodes whose min distance from the start node
-    // is known
+    let path = [];
     let minDist = []; // Ordered list of nodes with the node of minimum
     // distance from the start node at position zero.
     let pathFound = false;
@@ -133,22 +132,22 @@ function dijkstra(grid, startNode, endNode) {
     while (!pathFound) {
         if (minDist.length === 0) {
             // No path exists
-            return false;
+            return [false, path];
         }
 
         let currentNode = minDist.shift();
 
         if (currentNode.isEnd) {
             // We are done calculate path and return.
-            graph.path = [currentNode];
+            path = [currentNode];
 
             do {
-                previousNode = currentNode.pathTo;
-                graph.path.unshift(previousNode);
+                let previousNode = currentNode.pathTo;
+                path.unshift(previousNode);
                 currentNode = previousNode;
             } while (!currentNode.isStart);
 
-            return true;
+            return [true, path];
         }
         let dPlus1 = currentNode.d + 1;
 
