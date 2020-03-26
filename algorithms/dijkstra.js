@@ -114,6 +114,11 @@ function makeGraph(grid) {
  */
 function dijkstra(grid, startNode, endNode) {
     let graph = makeGraph(grid);
+    let knownDist = []; // List of nodes whose min distance from the start node
+    // is known
+    let minDist = []; // Ordered list of nodes with the node of minimum
+    // distance from the start node at position zero.
+    let pathFound = false;
 
     if (startNode === endNode) {
         throw 'Start node cannot be end node.';
@@ -121,6 +126,55 @@ function dijkstra(grid, startNode, endNode) {
 
     graph[startNode[0]][startNode[1]].isStart = true;
     graph[startNode[0]][startNode[1]].d = 0;
+    addToMinDist(minDist, graph[startNode[0]][startNode[1]]);
 
     graph[endNode[0]][endNode[1]].isEnd = true;
+
+    while (!pathFound) {
+        if (minDist.length === 0) {
+            // No path exists
+            return false;
+        }
+
+        let currentNode = minDist.shift();
+
+        if (currentNode.isEnd) {
+            // We are done calculate path and return.
+            graph.path = [currentNode];
+
+            do {
+                previousNode = currentNode.pathTo;
+                graph.path.unshift(previousNode);
+                currentNode = previousNode;
+            } while (!currentNode.isStart);
+
+            return true;
+        }
+        let dPlus1 = currentNode.d + 1;
+
+        for (let i = 0; i < currentNode.neighbours.length; i++) {
+            let neighbour = currentNode.neighbours[i];
+
+            if (neighbour.d > dPlus1) {
+                neighbour.d = dPlus1;
+                neighbour.pathTo = currentNode;
+
+                if (minDist.includes(neighbour)) {
+                    minDist.sort((a, b) => a.d - b.d);
+                } else {
+                    addToMinDist(minDist, neighbour);
+                }
+            }
+        }
+    }
+}
+
+function addToMinDist(minDist, node) {
+    for (let i = 0; i < minDist.length; i++) {
+        if (node.d < minDist[i].d) {
+            minDist.splice(i, 0, node);
+            return;
+        }
+    }
+    minDist.push(node);
 }

@@ -324,3 +324,50 @@ describe('Tests for the makeGraph() function', function() {
         expect(graph[3][4].neighbours).to.have.lengthOf(3);
     });
 });
+
+describe('Tests for the addToMinDist() function', function() {
+    let minDist;
+
+    beforeEach('Set up minDist array before each test', function() {
+        minDist = [{ d: 0 }, { d: 1 }, { d: 3 }, { d: 4 }];
+    });
+
+    it('Check adding to an empty array', function() {
+        minDist = [];
+        addToMinDist(minDist, { d: 0 });
+        expect(minDist).to.deep.equal([{ d: 0 }]);
+    });
+
+    it('Check adding to middle', function() {
+        addToMinDist(minDist, { d: 2 });
+        expect(minDist).to.deep.equal([
+            { d: 0 },
+            { d: 1 },
+            { d: 2 },
+            { d: 3 },
+            { d: 4 }
+        ]);
+    });
+
+    it('Check adding duplicate value', function() {
+        addToMinDist(minDist, { d: 3 });
+        expect(minDist).to.deep.equal([
+            { d: 0 },
+            { d: 1 },
+            { d: 3 },
+            { d: 3 },
+            { d: 4 }
+        ]);
+    });
+
+    it('Check adding to end', function() {
+        addToMinDist(minDist, { d: 6 });
+        expect(minDist).to.deep.equal([
+            { d: 0 },
+            { d: 1 },
+            { d: 3 },
+            { d: 4 },
+            { d: 6 }
+        ]);
+    });
+});
