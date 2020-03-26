@@ -3,6 +3,10 @@
  * finds the shortest path from a start node to an end node in a hexagonal grid
  * where each node is separated by a distance of one.
  */
+
+/**
+ * A class for creating nodes in a graph.
+ */
 class Node {
     constructor(row, col, parentGraph) {
         this.graph = parentGraph; // The graph containing this node
@@ -21,48 +25,51 @@ class Node {
     getNeighbours() {
         let neighbours = [];
 
-        // for readability
-        let row = this.row;
-        let col = this.col;
+        if (!this.isWall) {
+            // for readability
+            let row = this.row;
+            let col = this.col;
 
-        // top and bottom
-        if (row !== this.graph.length - 1) {
-            neighbours.push(this.graph[row + 1][col]);
-        }
-        if (row !== 0) {
-            neighbours.push(this.graph[row - 1][col]);
-        }
-
-        // left
-        if (col !== 0) {
-            neighbours.push(this.graph[row][col - 1]);
-            if (col % 2 === 0 && row !== 0) {
-                neighbours.push(this.graph[row - 1][col - 1]);
-            } else if (col % 2 !== 0 && row !== this.graph.length - 1) {
-                neighbours.push(this.graph[row + 1][col - 1]);
+            // top and bottom
+            if (row !== this.graph.length - 1) {
+                neighbours.push(this.graph[row + 1][col]);
             }
-        }
-
-        // right
-        if (col !== this.graph[row].length - 1) {
-            neighbours.push(this.graph[row][col + 1]);
-            if (col % 2 === 0 && row !== 0) {
-                neighbours.push(this.graph[row - 1][col + 1]);
-            } else if (col % 2 !== 0 && row !== this.graph.length - 1) {
-                neighbours.push(this.graph[row + 1][col + 1]);
+            if (row !== 0) {
+                neighbours.push(this.graph[row - 1][col]);
             }
-        }
 
-        // remove any neighbours that are actually walls
-        let notWallNeighbours = [];
-        for (let i = 0; i < neighbours.length; i++) {
-            const node = neighbours[i];
-            if (!node.isWall) {
-                notWallNeighbours.push(node);
+            // left
+            if (col !== 0) {
+                neighbours.push(this.graph[row][col - 1]);
+                if (col % 2 === 0 && row !== 0) {
+                    neighbours.push(this.graph[row - 1][col - 1]);
+                } else if (col % 2 !== 0 && row !== this.graph.length - 1) {
+                    neighbours.push(this.graph[row + 1][col - 1]);
+                }
             }
+
+            // right
+            if (col !== this.graph[row].length - 1) {
+                neighbours.push(this.graph[row][col + 1]);
+                if (col % 2 === 0 && row !== 0) {
+                    neighbours.push(this.graph[row - 1][col + 1]);
+                } else if (col % 2 !== 0 && row !== this.graph.length - 1) {
+                    neighbours.push(this.graph[row + 1][col + 1]);
+                }
+            }
+
+            // remove any neighbours that are actually walls
+            let notWallNeighbours = [];
+            for (let i = 0; i < neighbours.length; i++) {
+                const node = neighbours[i];
+                if (!node.isWall) {
+                    notWallNeighbours.push(node);
+                }
+            }
+            neighbours = notWallNeighbours;
         }
 
-        this.neighbours = notWallNeighbours;
+        this.neighbours = neighbours;
     }
 }
 
@@ -70,8 +77,8 @@ class Node {
  * Makes a graph of nodes from our grid matrix.  Grid matrix values of 0
  * represent a normal node, values of 1 represent a wall.
  */
-function makeGraph(graph, grid) {
-    graph = [];
+function makeGraph(grid) {
+    let graph = [];
 
     for (let i = 0; i < grid.length; i++) {
         let row = grid[i];
@@ -97,6 +104,7 @@ function makeGraph(graph, grid) {
             node.getNeighbours();
         }
     }
+    return graph;
 }
 
 /**

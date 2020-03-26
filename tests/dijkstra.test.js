@@ -159,8 +159,6 @@ describe('Tests for the Node() class', function() {
                 let node = graph2[2][1];
                 node.getNeighbours();
 
-                console.log(node.neighbours);
-
                 let n1 = graph2[2][0];
                 let n2 = graph2[1][1];
                 let n3 = graph2[2][2];
@@ -267,24 +265,36 @@ describe('Tests for the Node() class', function() {
                 expect(node.neighbours).to.have.lengthOf(2);
             });
 
-            it('Test wall functionality', function() {
-                let node = graph2[1][1];
-                graph2[2][2].isWall = true;
-                node.getNeighbours();
+            describe('Tests for wall functionality', function() {
+                it('Test walls are not included as neighbours', function() {
+                    let node = graph2[1][1];
+                    graph2[2][2].isWall = true;
+                    node.getNeighbours();
 
-                let n1 = graph2[0][1];
-                let n2 = graph2[2][1];
-                let n3 = graph2[1][0];
-                let n4 = graph2[2][0];
-                let n5 = graph2[1][2];
-                expect(node.neighbours).to.include(n1);
-                expect(node.neighbours).to.include(n2);
-                expect(node.neighbours).to.include(n3);
-                expect(node.neighbours).to.include(n4);
-                expect(node.neighbours).to.include(n5);
-                expect(node.neighbours).to.have.lengthOf(5);
+                    let n1 = graph2[0][1];
+                    let n2 = graph2[2][1];
+                    let n3 = graph2[1][0];
+                    let n4 = graph2[2][0];
+                    let n5 = graph2[1][2];
+                    expect(node.neighbours).to.include(n1);
+                    expect(node.neighbours).to.include(n2);
+                    expect(node.neighbours).to.include(n3);
+                    expect(node.neighbours).to.include(n4);
+                    expect(node.neighbours).to.include(n5);
+                    expect(node.neighbours).to.have.lengthOf(5);
 
-                graph2[2][2].isWall = false;
+                    graph2[2][2].isWall = false;
+                });
+
+                it('Test walls have no neighbours', function() {
+                    let node = graph2[1][1];
+                    node.isWall = true;
+                    node.getNeighbours();
+
+                    expect(node.neighbours).to.have.lengthOf(0);
+
+                    graph2[2][2].isWall = false;
+                });
             });
         });
     });
@@ -302,7 +312,15 @@ describe('Tests for the makeGraph() function', function() {
     });
 
     it('Test the function executes', function() {
-        let graph;
-        makeGraph(graph, grid);
+        makeGraph(grid);
+    });
+
+    it('Test that it returns what we expect', function() {
+        let graph = makeGraph(grid);
+
+        expect(graph).to.have.lengthOf(4);
+        expect(graph[0]).to.have.lengthOf(5);
+        expect(graph[0][0]).to.be.instanceOf(Node);
+        expect(graph[3][4].neighbours).to.have.lengthOf(3);
     });
 });
