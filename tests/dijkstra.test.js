@@ -1,115 +1,308 @@
 describe('Tests for the Node() class', function() {
-    let graph;
+    let graph1, graph2, graph3;
 
-    before('Set up a simple graph of nodes', function() {
-        graph = [];
+    before('Set up three graphs of nodes', function() {
+        graph1 = [];
+        graph2 = [];
+        graph3 = [];
 
-        for (let i = 0; i < 4; i++) {
+        // Single node
+        graph1.push([new Node(0, 0, graph1)]);
+
+        // 3 X 3 graph
+        for (let i = 0; i < 3; i++) {
+            let row = [];
+            for (let j = 0; j < 3; j++) {
+                row.push(new Node(i, j, graph2));
+            }
+            graph2.push(row);
+        }
+
+        // 3 X 4 graph
+        for (let i = 0; i < 3; i++) {
             let row = [];
             for (let j = 0; j < 4; j++) {
-                row.push(new Node(i, j, graph));
+                row.push(new Node(i, j, graph3));
             }
-            graph.push(row);
+            graph3.push(row);
         }
     });
 
-    it('Test we can access all nodes', function() {
-        for (let i = 0; i < graph.length; i++) {
-            const row = graph[i];
-            for (let j = 0; j < row.length; j++) {
-                const node = row[j];
-                expect(node.row).to.equal(i);
-                expect(node.col).to.equal(j);
+    describe('Test we can access all nodes', function() {
+        it('Test single node', function() {
+            const node = graph1[0][0];
+            expect(node.row).to.equal(0);
+            expect(node.col).to.equal(0);
+        });
+
+        it('Test 3 X 3 graph', function() {
+            for (let i = 0; i < graph2.length; i++) {
+                const row = graph2[i];
+                for (let j = 0; j < row.length; j++) {
+                    const node = row[j];
+                    expect(node.row).to.equal(i);
+                    expect(node.col).to.equal(j);
+                }
             }
-        }
+        });
+
+        it('Test 3 X 4 graph', function() {
+            for (let i = 0; i < graph3.length; i++) {
+                const row = graph3[i];
+                for (let j = 0; j < row.length; j++) {
+                    const node = row[j];
+                    expect(node.row).to.equal(i);
+                    expect(node.col).to.equal(j);
+                }
+            }
+        });
     });
 
     describe('Tests for the getNeighbours() method and neighbours property', function() {
-        it('Test an inner node', function() {
-            let node = graph[1][1];
-            node.getNeighbours();
+        describe('Test method executes on all nodes', function() {
+            it('Test single node', function() {
+                const node = graph1[0][0];
+                node.getNeighbours();
+            });
 
-            let n1 = graph[0][1];
-            let n2 = graph[2][1];
-            let n3 = graph[1][0];
-            let n4 = graph[2][0];
-            let n5 = graph[1][2];
-            let n6 = graph[2][2];
-            expect(node.neighbours).to.include(n1);
-            expect(node.neighbours).to.include(n2);
-            expect(node.neighbours).to.include(n3);
-            expect(node.neighbours).to.include(n4);
-            expect(node.neighbours).to.include(n5);
-            expect(node.neighbours).to.include(n6);
-            expect(node.neighbours).to.have.lengthOf(6);
+            it('Test 3 X 3 graph', function() {
+                for (let i = 0; i < graph2.length; i++) {
+                    const row = graph2[i];
+                    for (let j = 0; j < row.length; j++) {
+                        const node = row[j];
+                        node.getNeighbours();
+                    }
+                }
+            });
+
+            it('Test 3 X 4 graph', function() {
+                for (let i = 0; i < graph3.length; i++) {
+                    const row = graph3[i];
+                    for (let j = 0; j < row.length; j++) {
+                        const node = row[j];
+                        node.getNeighbours();
+                    }
+                }
+            });
         });
 
-        it('Test a first row node', function() {
-            let node = graph[0][2];
-            node.getNeighbours();
+        describe('Test return values are correct for all cases', function() {
+            it('Test an inner node from column 1', function() {
+                let node = graph2[1][1];
+                node.getNeighbours();
 
-            let n1 = graph[0][1];
-            let n2 = graph[1][2];
-            let n3 = graph[0][3];
-            expect(node.neighbours).to.include(n1);
-            expect(node.neighbours).to.include(n2);
-            expect(node.neighbours).to.include(n3);
-            expect(node.neighbours).to.have.lengthOf(3);
+                let n1 = graph2[0][1];
+                let n2 = graph2[2][1];
+                let n3 = graph2[1][0];
+                let n4 = graph2[2][0];
+                let n5 = graph2[1][2];
+                let n6 = graph2[2][2];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.include(n5);
+                expect(node.neighbours).to.include(n6);
+                expect(node.neighbours).to.have.lengthOf(6);
+            });
+
+            it('Test an inner node from column 2', function() {
+                let node = graph3[1][2];
+                node.getNeighbours();
+
+                let n1 = graph3[0][2];
+                let n2 = graph3[2][2];
+                let n3 = graph3[0][1];
+                let n4 = graph3[1][1];
+                let n5 = graph3[0][3];
+                let n6 = graph3[1][3];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.include(n5);
+                expect(node.neighbours).to.include(n6);
+                expect(node.neighbours).to.have.lengthOf(6);
+            });
+
+            it('Test a first row, column 1 node from 3 X 3 graph', function() {
+                let node = graph2[0][1];
+                node.getNeighbours();
+
+                let n1 = graph2[1][1];
+                let n2 = graph2[0][0];
+                let n3 = graph2[1][0];
+                let n4 = graph2[0][2];
+                let n5 = graph2[1][2];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.include(n5);
+                expect(node.neighbours).to.have.lengthOf(5);
+            });
+
+            it('Test a first row, column 2 node from 3 X 4 graph', function() {
+                let node = graph3[0][2];
+                node.getNeighbours();
+
+                let n1 = graph3[0][1];
+                let n2 = graph3[1][2];
+                let n3 = graph3[0][3];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.have.lengthOf(3);
+            });
+
+            it('Test a last row, column 1 node from 3 X 3 graph', function() {
+                let node = graph2[2][1];
+                node.getNeighbours();
+
+                console.log(node.neighbours);
+
+                let n1 = graph2[2][0];
+                let n2 = graph2[1][1];
+                let n3 = graph2[2][2];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.have.lengthOf(3);
+            });
+
+            it('Test a last row, column 2 node from 3 X 4 graph', function() {
+                let node = graph3[2][2];
+                node.getNeighbours();
+
+                let n1 = graph3[1][2];
+                let n2 = graph3[2][1];
+                let n3 = graph3[1][1];
+                let n4 = graph3[1][3];
+                let n5 = graph3[2][3];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.include(n5);
+                expect(node.neighbours).to.have.lengthOf(5);
+            });
+
+            it('Test a left column node from 3 X 3 graph', function() {
+                let node = graph2[1][0];
+                node.getNeighbours();
+
+                let n1 = graph2[0][0];
+                let n2 = graph2[2][0];
+                let n3 = graph2[0][1];
+                let n4 = graph2[1][1];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.have.lengthOf(4);
+            });
+
+            it('Test a right column node from 3 X 3 graph', function() {
+                let node = graph2[1][2];
+                node.getNeighbours();
+
+                let n1 = graph2[0][2];
+                let n2 = graph2[2][2];
+                let n3 = graph2[0][1];
+                let n4 = graph2[1][1];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.have.lengthOf(4);
+            });
+
+            it('Test a right column node from 3 X 4 graph', function() {
+                let node = graph3[1][3];
+                node.getNeighbours();
+
+                let n1 = graph3[0][3];
+                let n2 = graph3[2][3];
+                let n3 = graph3[1][2];
+                let n4 = graph3[2][2];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.have.lengthOf(4);
+            });
+
+            it('Test the top-left node of 3 X 3 graph', function() {
+                let node = graph2[0][0];
+                node.getNeighbours();
+
+                let n1 = graph2[1][0];
+                let n2 = graph2[0][1];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.have.lengthOf(2);
+            });
+
+            it('Test the bottom-right node of 3 X 3 graph', function() {
+                let node = graph2[2][2];
+                node.getNeighbours();
+
+                let n1 = graph2[2][1];
+                let n2 = graph2[1][1];
+                let n3 = graph2[1][2];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.have.lengthOf(3);
+            });
+
+            it('Test the bottom-right node of 3 X 4 graph', function() {
+                let node = graph3[2][3];
+                node.getNeighbours();
+
+                let n1 = graph3[2][2];
+                let n2 = graph3[1][3];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.have.lengthOf(2);
+            });
+
+            it('Test wall functionality', function() {
+                let node = graph2[1][1];
+                graph2[2][2].isWall = true;
+                node.getNeighbours();
+
+                let n1 = graph2[0][1];
+                let n2 = graph2[2][1];
+                let n3 = graph2[1][0];
+                let n4 = graph2[2][0];
+                let n5 = graph2[1][2];
+                expect(node.neighbours).to.include(n1);
+                expect(node.neighbours).to.include(n2);
+                expect(node.neighbours).to.include(n3);
+                expect(node.neighbours).to.include(n4);
+                expect(node.neighbours).to.include(n5);
+                expect(node.neighbours).to.have.lengthOf(5);
+
+                graph2[2][2].isWall = false;
+            });
         });
+    });
+});
 
-        it('Test a last row node', function() {
-            let node = graph[3][1];
-            node.getNeighbours();
+describe('Tests for the makeGraph() function', function() {
+    let grid;
+    before('Sets up a basic grid for testing', function() {
+        grid = [
+            [0, 0, 1, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 1, 0, 0],
+            [0, 0, 1, 0, 0]
+        ];
+    });
 
-            let n1 = graph[3][0];
-            let n2 = graph[2][1];
-            let n3 = graph[3][2];
-            expect(node.neighbours).to.include(n1);
-            expect(node.neighbours).to.include(n2);
-            expect(node.neighbours).to.include(n3);
-            expect(node.neighbours).to.have.lengthOf(3);
-        });
-
-        it('Test the top-left node', function() {
-            let node = graph[0][0];
-            node.getNeighbours();
-
-            let n1 = graph[1][0];
-            let n2 = graph[0][1];
-            expect(node.neighbours).to.include(n1);
-            expect(node.neighbours).to.include(n2);
-            expect(node.neighbours).to.have.lengthOf(2);
-        });
-
-        it('Test the bottom-right node', function() {
-            let node = graph[3][3];
-            node.getNeighbours();
-
-            let n1 = graph[2][3];
-            let n2 = graph[3][2];
-            expect(node.neighbours).to.include(n1);
-            expect(node.neighbours).to.include(n2);
-            expect(node.neighbours).to.have.lengthOf(2);
-        });
-
-        it('Test wall functionality', function() {
-            let node = graph[1][1];
-            graph[2][2].isWall = true;
-            node.getNeighbours();
-
-            let n1 = graph[0][1];
-            let n2 = graph[2][1];
-            let n3 = graph[1][0];
-            let n4 = graph[2][0];
-            let n5 = graph[1][2];
-            expect(node.neighbours).to.include(n1);
-            expect(node.neighbours).to.include(n2);
-            expect(node.neighbours).to.include(n3);
-            expect(node.neighbours).to.include(n4);
-            expect(node.neighbours).to.include(n5);
-            expect(node.neighbours).to.have.lengthOf(5);
-
-            graph[2][2].isWall = false;
-        });
+    it('Test the function executes', function() {
+        let graph;
+        makeGraph(graph, grid);
     });
 });
