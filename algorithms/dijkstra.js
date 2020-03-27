@@ -123,7 +123,7 @@ class Dijkstra {
 
         this.graph[startNode[0]][startNode[1]].isStart = true;
         this.graph[startNode[0]][startNode[1]].d = 0;
-        addToMinDist(this.minDist, this.graph[startNode[0]][startNode[1]]);
+        this.addToMinDist(this.graph[startNode[0]][startNode[1]]);
 
         this.graph[endNode[0]][endNode[1]].isEnd = true;
     }
@@ -172,7 +172,7 @@ class Dijkstra {
                 if (this.minDist.includes(neighbour)) {
                     this.minDist.sort((a, b) => a.d - b.d);
                 } else {
-                    addToMinDist(this.minDist, neighbour);
+                    this.addToMinDist(neighbour);
                 }
             }
         }
