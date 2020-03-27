@@ -112,43 +112,54 @@ function makeGraph(grid) {
  * array representing the start node position and an array representing the end
  * node position.
  */
-function dijkstra(grid, startNode, endNode) {
-    let graph = makeGraph(grid);
-    let path = [];
-    let minDist = []; // Ordered list of nodes with the node of minimum
-    // distance from the start node at position zero.
-    let pathFound = false;
+class Dijkstra {
+    constructor(grid, startNode, endNode) {
+        this.graph = makeGraph(grid);
+        this.path = [];
+        this.pathFound = false;
+        this.noPath = false;
+        this.minDist = []; // Ordered list of nodes with the node of minimum
+        // distance from the start node at position zero.
 
-    if (startNode === endNode) {
-        throw 'Start node cannot be end node.';
+        this.graph[startNode[0]][startNode[1]].isStart = true;
+        this.graph[startNode[0]][startNode[1]].d = 0;
+        addToMinDist(this.minDist, this.graph[startNode[0]][startNode[1]]);
+
+        this.graph[endNode[0]][endNode[1]].isEnd = true;
     }
 
-    graph[startNode[0]][startNode[1]].isStart = true;
-    graph[startNode[0]][startNode[1]].d = 0;
-    addToMinDist(minDist, graph[startNode[0]][startNode[1]]);
-
-    graph[endNode[0]][endNode[1]].isEnd = true;
-
-    while (!pathFound) {
-        if (minDist.length === 0) {
-            // No path exists
-            return [false, path];
+    /**
+     * Increments a step of the algorithm.
+     */
+    step() {
+        if (this.pathFound) {
+            return;
         }
 
-        let currentNode = minDist.shift();
+        if (this.minDist.length === 0) {
+            // No path exists
+            this.noPath = true;
+            this.pathFound = true;
+            return;
+        }
+
+        let currentNode = this.minDist.shift();
 
         if (currentNode.isEnd) {
             // We are done calculate path and return.
-            path = [currentNode];
+            this.pathFound = true;
+
+            this.path = [currentNode];
 
             do {
                 let previousNode = currentNode.pathTo;
-                path.unshift(previousNode);
+                this.path.unshift(previousNode);
                 currentNode = previousNode;
             } while (!currentNode.isStart);
 
-            return [true, path];
+            return;
         }
+
         let dPlus1 = currentNode.d + 1;
 
         for (let i = 0; i < currentNode.neighbours.length; i++) {
@@ -158,22 +169,28 @@ function dijkstra(grid, startNode, endNode) {
                 neighbour.d = dPlus1;
                 neighbour.pathTo = currentNode;
 
-                if (minDist.includes(neighbour)) {
-                    minDist.sort((a, b) => a.d - b.d);
+                if (this.minDist.includes(neighbour)) {
+                    this.minDist.sort((a, b) => a.d - b.d);
                 } else {
-                    addToMinDist(minDist, neighbour);
+                    addToMinDist(this.minDist, neighbour);
                 }
             }
         }
     }
-}
 
-function addToMinDist(minDist, node) {
-    for (let i = 0; i < minDist.length; i++) {
-        if (node.d < minDist[i].d) {
-            minDist.splice(i, 0, node);
-            return;
-        }
+    solve() {
+        do {
+            this.step();
+        } while (!this.pathFound);
     }
-    minDist.push(node);
+
+    addToMinDist(node) {
+        for (let i = 0; i < this.minDist.length; i++) {
+            if (node.d < this.minDist[i].d) {
+                this.minDist.splice(i, 0, node);
+                return;
+            }
+        }
+        this.minDist.push(node);
+    }
 }
