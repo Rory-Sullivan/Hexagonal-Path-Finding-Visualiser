@@ -18,8 +18,15 @@ let grid = [];
 let start = [];
 let end = [];
 
+// Canvas elements
+let bgCanvas, canvas;
+let bgCtx, ctx;
+
 // Action for adding or removing walls
 let action = 'adding';
+
+// Animation
+let animationId;
 
 /**
  * Object for storing information about our hexagons.
@@ -62,10 +69,10 @@ class Hex {
  * Creates the background grid for our path finding.
  */
 function setup() {
-    window.bgCanvas = document.getElementById('background');
-    window.bgCtx = bgCanvas.getContext('2d');
-    window.canvas = document.getElementById('animation');
-    window.ctx = canvas.getContext('2d');
+    bgCanvas = document.getElementById('background');
+    bgCtx = bgCanvas.getContext('2d');
+    canvas = document.getElementById('animation');
+    ctx = canvas.getContext('2d');
 
     resize();
 
@@ -91,11 +98,10 @@ function setup() {
 
     canvas.addEventListener('mousedown', addStart);
     // window.addEventListener('resize', setup, false);
-    window.requestAnimationFrame(animate);
 }
 
 /**
- * Loops on every frame refresh.
+ * Update display.
  */
 function animate() {
     for (let i = 0; i < m; i++) {
@@ -105,8 +111,6 @@ function animate() {
             }
         }
     }
-
-    window.requestAnimationFrame(animate);
 }
 
 /**
@@ -142,6 +146,7 @@ function runDijkstra() {
         for (let i = 1; i < path.length - 1; i++) {
             const node = path[i];
             hexes[node.row][node.col].fill = 'LightBlue';
+            animate();
         }
     } else {
         window.alert('No path possible');
@@ -153,6 +158,8 @@ function addStart(event) {
 
     hexes[start[0]][start[1]].fill = 'green';
 
+    animate();
+
     canvas.removeEventListener('mousedown', addStart);
     canvas.addEventListener('mousedown', addEnd);
 }
@@ -161,6 +168,8 @@ function addEnd(event) {
     end = getCursorPosition(event);
 
     hexes[end[0]][end[1]].fill = 'red';
+
+    animate();
 
     canvas.removeEventListener('mousedown', addEnd);
     canvas.addEventListener('mousedown', addWallBegin);
@@ -174,6 +183,8 @@ function addWallBegin(event) {
     } else {
         action = 'removing';
     }
+
+    animationId = setInterval(animate, 33);
 
     addWall(event);
     canvas.addEventListener('mousemove', addWall);
@@ -200,6 +211,8 @@ function addWall(event) {
 }
 
 function addWallEnd(event) {
+    clearInterval(animationId);
+    animate();
     canvas.removeEventListener('mousemove', addWall);
     window.removeEventListener('mouseup', addWallEnd);
 }
@@ -233,6 +246,7 @@ function reset() {
             hexes[i][j].fill = 'white';
         }
     }
+    animate();
 
     canvas.addEventListener('mousedown', addStart);
 }
