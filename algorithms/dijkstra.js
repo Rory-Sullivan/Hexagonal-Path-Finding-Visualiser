@@ -144,6 +144,7 @@ class Dijkstra {
         }
 
         let currentNode = this.minDist.shift();
+        let checkedNodes = [];
 
         if (currentNode.isEnd) {
             // We are done calculate path and return.
@@ -164,6 +165,7 @@ class Dijkstra {
 
         for (let i = 0; i < currentNode.neighbours.length; i++) {
             let neighbour = currentNode.neighbours[i];
+            checkedNodes.push(neighbour);
 
             if (neighbour.d > dPlus1) {
                 neighbour.d = dPlus1;
@@ -176,6 +178,8 @@ class Dijkstra {
                 }
             }
         }
+
+        return checkedNodes;
     }
 
     solve() {

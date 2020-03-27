@@ -5,8 +5,6 @@
 /**
  * Global variables
  * */
-const pi = Math.PI; // TODO: remove this
-
 // Hexagons
 const hexSize = 16; // Should be divisible by 2
 const hexYDim = Math.floor(hexSize * (Math.sqrt(3) / 2)); // y-axis dimension
@@ -27,6 +25,8 @@ let action = 'adding';
 
 // Animation
 let animationId;
+let d;
+const delay = 33;
 
 /**
  * Object for storing information about our hexagons.
@@ -140,17 +140,35 @@ function runDijkstra() {
 
     canvas.removeEventListener('mousedown', addWallBegin);
 
-    let [pathFound, path] = dijkstra(grid, start, end);
+    d = new Dijkstra(grid, start, end);
 
-    if (pathFound) {
-        for (let i = 1; i < path.length - 1; i++) {
-            const node = path[i];
-            hexes[node.row][node.col].fill = 'LightBlue';
-            animate();
+    setTimeout(animateSteps, delay);
+}
+
+function animateSteps() {
+    let checkedNodes = d.step();
+    if (checkedNodes) {
+        for (let i = 0; i < checkedNodes.length; i++) {
+            const node = checkedNodes[i];
+            if (!node.isStart && !node.isEnd) {
+                hexes[node.row][node.col].fill = 'paleGreen';
+            }
+        }
+    }
+
+    if (d.pathFound) {
+        if (d.noPath) {
+            window.alert('No path possible');
+        } else {
+            for (let i = 1; i < d.path.length - 1; i++) {
+                const node = d.path[i];
+                hexes[node.row][node.col].fill = 'LightBlue';
+            }
         }
     } else {
-        window.alert('No path possible');
+        setTimeout(animateSteps, delay);
     }
+    animate();
 }
 
 function addStart(event) {
@@ -166,6 +184,11 @@ function addStart(event) {
 
 function addEnd(event) {
     end = getCursorPosition(event);
+
+    if (end[0] === start[0] && end[1] === start[1]) {
+        end = [];
+        return;
+    }
 
     hexes[end[0]][end[1]].fill = 'red';
 
