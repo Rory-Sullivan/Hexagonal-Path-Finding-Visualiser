@@ -5,10 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Path Finding Visualiser</title>
         <link rel="stylesheet" href="./style.css" />
+
+        <script src="./algorithms/dijkstra.js"></script>
         <script src="./script.js"></script>
     </head>
     <body onload="setup();">
-        <canvas id="background"> </canvas>
-        <canvas id="animation"></canvas>
+        <div class="buttonsContainer">
+            <button onclick="runDijkstra();">Dijkstra</button>
+            <button onclick="reset();">Reset</button>
+        </div>
+
+        <div class="canvasContainer">
+            <canvas id="background"></canvas>
+            <canvas id="animation"></canvas>
+        </div>
     </body>
 </html>

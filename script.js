@@ -1,24 +1,31 @@
 /**
- * Description
+ * TODO: Description
  */
 
-// Global variables
-const pi = Math.PI;
-const hexSize = 20; // Should be divisible by 2
-const hexYDim = Math.floor(hexSize * (Math.sqrt(3) / 2)); // y-axis dimension
-let m, n; // grid size
+/**
+ * Global variables
+ * */
+const pi = Math.PI; // TODO: remove this
 
-let grid = []; // Matrix for storing information about our grid.
-let start = { row: 0, col: 0 };
-let finish = { row: 10, col: 10 };
+// Hexagons
+const hexSize = 16; // Should be divisible by 2
+const hexYDim = Math.floor(hexSize * (Math.sqrt(3) / 2)); // y-axis dimension
+let hexes = [];
+
+// Grid matrix.  Stores information about the grid.
+let m, n; // grid size
+let grid = [];
+let start = [];
+let end = [];
+
+// Action for adding or removing walls
+let action = 'adding';
 
 /**
  * Object for storing information about our hexagons.
  */
 class Hex {
     constructor(row, col) {
-        this.row = row;
-        this.col = col;
         if (col % 2 === 0) {
             this.xPos = (col / 2) * (hexSize * 3);
             this.yPos = hexYDim + row * (2 * hexYDim);
@@ -30,32 +37,25 @@ class Hex {
     }
 
     draw(context) {
-        drawHex(this.xPos, this.yPos, context, this.fill);
+        context.save();
+
+        context.lineWidth = 2;
+        context.strokeStyle = 'black';
+        context.fillStyle = this.fill;
+
+        context.beginPath();
+        context.moveTo(this.xPos, this.yPos);
+        context.lineTo(this.xPos + hexSize / 2, this.yPos - hexYDim);
+        context.lineTo(this.xPos + hexSize * (3 / 2), this.yPos - hexYDim);
+        context.lineTo(this.xPos + hexSize * 2, this.yPos);
+        context.lineTo(this.xPos + hexSize * (3 / 2), this.yPos + hexYDim);
+        context.lineTo(this.xPos + hexSize / 2, this.yPos + hexYDim);
+        context.closePath();
+        context.stroke();
+        context.fill();
+
+        context.restore();
     }
-}
-
-/**
- * Draws a hexagon with the input position as the left corner.
- */
-function drawHex(x, y, ctx, fill) {
-    ctx.save();
-
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'black';
-    ctx.fillStyle = fill;
-
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + hexSize / 2, y - hexYDim);
-    ctx.lineTo(x + hexSize * (3 / 2), y - hexYDim);
-    ctx.lineTo(x + hexSize * 2, y);
-    ctx.lineTo(x + hexSize * (3 / 2), y + hexYDim);
-    ctx.lineTo(x + hexSize / 2, y + hexYDim);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.fill();
-
-    ctx.restore();
 }
 
 /**
@@ -78,18 +78,19 @@ function setup() {
     n = Math.floor((w - hexSize / 2) / (hexSize * 1.5)); // no. of columns
 
     for (let i = 0; i < m; i++) {
-        let row = [];
+        let gridRow = [];
+        let hexesRow = [];
         for (let j = 0; j < n; j++) {
-            row.push(new Hex(i, j));
-            row[j].draw(bgCtx);
+            gridRow.push(0);
+            hexesRow.push(new Hex(i, j));
+            hexesRow[j].draw(bgCtx);
         }
-        grid.push(row);
+        grid.push(gridRow);
+        hexes.push(hexesRow);
     }
 
-    grid[start.row][start.col].fill = 'green';
-    grid[finish.row][finish.col].fill = 'red';
-
-    window.addEventListener('resize', setup, false);
+    canvas.addEventListener('mousedown', addStart);
+    // window.addEventListener('resize', setup, false);
     window.requestAnimationFrame(animate);
 }
 
@@ -99,8 +100,8 @@ function setup() {
 function animate() {
     for (let i = 0; i < m; i++) {
         for (let j = 0; j < n; j++) {
-            if (grid[i][j].fill !== 'white') {
-                grid[i][j].draw(ctx);
+            if (grid[i][j].fill !== 0) {
+                hexes[i][j].draw(ctx);
             }
         }
     }
@@ -112,10 +113,126 @@ function animate() {
  * Resizes our canvases to fit the window.
  */
 function resize() {
-    window.w = innerWidth;
-    window.h = innerHeight;
+    window.w = document.getElementsByClassName(
+        'canvasContainer'
+    )[0].offsetWidth;
+    window.h = document.getElementsByClassName(
+        'canvasContainer'
+    )[0].offsetHeight;
     bgCanvas.width = w;
     bgCanvas.height = h;
     canvas.width = w;
     canvas.height = h;
+}
+
+function runDijkstra() {
+    if (start.length === 0) {
+        window.alert('Please select a starting point');
+        return;
+    } else if (end.length === 0) {
+        window.alert('Please select an end point');
+        return;
+    }
+
+    canvas.removeEventListener('mousedown', addWallBegin);
+
+    let [pathFound, path] = dijkstra(grid, start, end);
+
+    if (pathFound) {
+        for (let i = 1; i < path.length - 1; i++) {
+            const node = path[i];
+            hexes[node.row][node.col].fill = 'LightBlue';
+        }
+    } else {
+        window.alert('No path possible');
+    }
+}
+
+function addStart(event) {
+    start = getCursorPosition(event);
+
+    hexes[start[0]][start[1]].fill = 'green';
+
+    canvas.removeEventListener('mousedown', addStart);
+    canvas.addEventListener('mousedown', addEnd);
+}
+
+function addEnd(event) {
+    end = getCursorPosition(event);
+
+    hexes[end[0]][end[1]].fill = 'red';
+
+    canvas.removeEventListener('mousedown', addEnd);
+    canvas.addEventListener('mousedown', addWallBegin);
+}
+
+function addWallBegin(event) {
+    let [row, col] = getCursorPosition(event);
+
+    if (grid[row][col] == 0) {
+        action = 'adding';
+    } else {
+        action = 'removing';
+    }
+
+    addWall(event);
+    canvas.addEventListener('mousemove', addWall);
+    window.addEventListener('mouseup', addWallEnd);
+}
+
+function addWall(event) {
+    let [row, col] = getCursorPosition(event);
+
+    if (
+        (row === start[0] && col === start[1]) ||
+        (row === end[0] && col === end[1])
+    ) {
+        return;
+    }
+
+    if (action === 'adding') {
+        grid[row][col] = 1;
+        hexes[row][col].fill = 'black';
+    } else if (action === 'removing') {
+        grid[row][col] = 0;
+        hexes[row][col].fill = 'white';
+    }
+}
+
+function addWallEnd(event) {
+    canvas.removeEventListener('mousemove', addWall);
+    window.removeEventListener('mouseup', addWallEnd);
+}
+
+function getCursorPosition(event) {
+    const rect = canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Get column
+    const col = Math.floor((x - hexSize * 0.25) / (hexSize * 1.5));
+
+    // Get row
+    let row;
+    if (col % 2 === 0) {
+        row = Math.floor(y / (hexYDim * 2));
+    } else {
+        row = Math.floor((y - hexYDim) / (hexYDim * 2));
+    }
+
+    return [row, col];
+}
+
+function reset() {
+    start = [];
+    end = [];
+
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            grid[i][j] = 0;
+            hexes[i][j].fill = 'white';
+        }
+    }
+
+    canvas.addEventListener('mousedown', addStart);
 }
