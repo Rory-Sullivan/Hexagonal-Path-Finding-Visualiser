@@ -13,8 +13,8 @@ let hexes = [];
 // Grid matrix.  Stores information about the grid.
 let m, n; // grid size
 let grid;
-let start;
-let end;
+let start = [];
+let end = [];
 
 // Document elements
 let bgCanvas, canvas;
@@ -202,6 +202,7 @@ function addStart(event) {
     }
 
     hexes[start[0]][start[1]].fill = 'green';
+    grid[start[0]][start[1]] = 0;
 
     animate();
 
@@ -222,6 +223,7 @@ function addEnd(event) {
     }
 
     hexes[end[0]][end[1]].fill = 'red';
+    grid[end[0]][end[1]] = 0;
 
     animate();
 
