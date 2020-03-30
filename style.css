@@ -3,17 +3,32 @@ body {
     padding: 0;
 }
 
-.buttonsContainer {
-    width: fit-content;
-    margin: auto;
+div#header {
+    background-color: lightblue;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.canvasContainer {
+div#header div#instructionsContainer {
+    width: 50%;
+    min-width: 13em;
     margin: auto;
-    width: 90vw;
+    text-align: center;
+}
+
+.buttonsContainer {
+    width: 50%;
+    min-width: 13em;
+    margin: auto;
+    text-align: center;
+    padding: 5px 0px;
+}
+
+#canvasContainer {
+    margin: auto;
     height: 90vh;
 }
 
 canvas {
-    position: fixed;
+    position: absolute;
 }

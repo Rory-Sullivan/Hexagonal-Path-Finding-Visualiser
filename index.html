@@ -10,12 +10,17 @@
         <script src="./script.js"></script>
     </head>
     <body onload="setup();">
-        <div class="buttonsContainer">
-            <button onclick="runDijkstra();">Dijkstra</button>
-            <button onclick="reset();">Reset</button>
+        <div id="header">
+            <div id="instructionsContainer">
+                <h2 id="instructions">Select start position</h2>
+            </div>
+            <div class="buttonsContainer">
+                <button onclick="runDijkstra();">Dijkstra</button>
+                <button onclick="reset();">Reset</button>
+            </div>
         </div>
 
-        <div class="canvasContainer">
+        <div id="canvasContainer">
             <canvas id="background"></canvas>
             <canvas id="animation"></canvas>
         </div>

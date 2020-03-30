@@ -12,13 +12,15 @@ let hexes = [];
 
 // Grid matrix.  Stores information about the grid.
 let m, n; // grid size
-let grid = [];
-let start = [];
-let end = [];
+let grid;
+let start;
+let end;
 
-// Canvas elements
+// Document elements
 let bgCanvas, canvas;
 let bgCtx, ctx;
+let instructions;
+let w, h; // width and height of canvas.
 
 // Action for adding or removing walls
 let action = 'adding';
@@ -73,8 +75,14 @@ function setup() {
     bgCtx = bgCanvas.getContext('2d');
     canvas = document.getElementById('animation');
     ctx = canvas.getContext('2d');
+    instructions = document.getElementById('instructions');
 
-    resize();
+    w = document.getElementById('canvasContainer').offsetWidth;
+    h = document.getElementById('canvasContainer').offsetHeight;
+    bgCanvas.width = w;
+    bgCanvas.height = h;
+    canvas.width = w;
+    canvas.height = h;
 
     // Background
     bgCtx.fillStyle = 'grey';
@@ -83,6 +91,9 @@ function setup() {
     // Add hexagons to our matrix grid and draw them.
     m = Math.floor((h - hexYDim) / (hexYDim * 2)); // no. of rows
     n = Math.floor((w - hexSize / 2) / (hexSize * 1.5)); // no. of columns
+
+    grid = [];
+    hexes = [];
 
     for (let i = 0; i < m; i++) {
         let gridRow = [];
@@ -97,7 +108,7 @@ function setup() {
     }
 
     canvas.addEventListener('mousedown', addStart);
-    // window.addEventListener('resize', setup, false);
+    window.addEventListener('resize', resize, false);
 }
 
 /**
@@ -117,16 +128,13 @@ function animate() {
  * Resizes our canvases to fit the window.
  */
 function resize() {
-    window.w = document.getElementsByClassName(
-        'canvasContainer'
-    )[0].offsetWidth;
-    window.h = document.getElementsByClassName(
-        'canvasContainer'
-    )[0].offsetHeight;
-    bgCanvas.width = w;
-    bgCanvas.height = h;
-    canvas.width = w;
-    canvas.height = h;
+    canvas.removeEventListener('mousedown', addWallBegin);
+
+    start = [];
+    end = [];
+
+    setup();
+    instructions.innerHTML = 'Select start position';
 }
 
 function runDijkstra() {
@@ -139,6 +147,7 @@ function runDijkstra() {
     }
 
     canvas.removeEventListener('mousedown', addWallBegin);
+    instructions.innerHTML = 'Calculating...';
 
     if (d) {
         for (let i = 0; i < m; i++) {
@@ -175,8 +184,9 @@ function animateSteps() {
                 const node = d.path[i];
                 hexes[node.row][node.col].fill = 'lightBlue';
             }
-            canvas.addEventListener('mousedown', addWallBegin);
         }
+        canvas.addEventListener('mousedown', addWallBegin);
+        instructions.innerHTML = 'Done!';
     } else {
         setTimeout(animateSteps, delay);
     }
@@ -197,6 +207,7 @@ function addStart(event) {
 
     canvas.removeEventListener('mousedown', addStart);
     canvas.addEventListener('mousedown', addEnd);
+    instructions.innerHTML = 'Select end position';
 }
 
 function addEnd(event) {
@@ -216,6 +227,7 @@ function addEnd(event) {
 
     canvas.removeEventListener('mousedown', addEnd);
     canvas.addEventListener('mousedown', addWallBegin);
+    instructions.innerHTML = 'Add walls';
 }
 
 function addWallBegin(event) {
@@ -300,4 +312,5 @@ function reset() {
     animate();
 
     canvas.addEventListener('mousedown', addStart);
+    instructions.innerHTML = 'Select start position';
 }
