@@ -260,6 +260,8 @@ function getCursorPosition(event) {
 }
 
 function reset() {
+    canvas.removeEventListener('mousedown', addWallBegin);
+
     start = [];
     end = [];
 

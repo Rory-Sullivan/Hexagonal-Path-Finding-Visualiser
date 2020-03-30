@@ -295,6 +295,21 @@ describe('Tests for the Node() class', function() {
 
                     graph2[2][2].isWall = false;
                 });
+
+                it('Test node with walls on three sides', function() {
+                    let node = graph2[1][0];
+                    graph2[0][1].isWall = true;
+                    graph2[1][1].isWall = true;
+                    graph2[2][0].isWall = true;
+                    node.getNeighbours();
+
+                    expect(node.neighbours).to.include(graph2[0][0]);
+                    expect(node.neighbours).to.have.lengthOf(1);
+
+                    graph2[0][1].isWall = false;
+                    graph2[1][1].isWall = false;
+                    graph2[2][0].isWall = false;
+                });
             });
         });
     });
