@@ -1,25 +1,22 @@
-/**
- * An implementation of Dijksta's shortest path algorithm.  This implementation
- * finds the shortest path from a start node to an end node in a hexagonal grid
- * where each node is separated by a distance of one.
- */
-
-/**
- * Implements our Dijkstra algorithm.  Inputs are our hexagonal grid matrix, an
- * array representing the start node position and an array representing the end
- * node position.
- */
-class Dijkstra {
+class aStar {
     constructor(grid, startNode, endNode) {
         this.graph = new Graph(grid);
+        this.endNode = endNode;
         this.path = [];
         this.pathFound = false;
         this.noPath = false;
         this.minDist = []; // Ordered list of nodes with the node of minimum
-        // distance from the start node at position zero.
+        // distance at position zero.
 
         this.graph[startNode[0]][startNode[1]].isStart = true;
-        this.graph[startNode[0]][startNode[1]].d = 0;
+        this.graph[startNode[0]][startNode[1]].dStart = 0; // distance from start node
+        this.graph[startNode[0]][startNode[1]].dEnd = hexDistanceBetween(
+            startNode,
+            endNode
+        ); // distance from end node
+        this.graph[startNode[0]][startNode[1]].d =
+            this.graph[startNode[0]][startNode[1]].dStart +
+            this.graph[startNode[0]][startNode[1]].dEnd;
         this.addToMinDist(this.graph[startNode[0]][startNode[1]]);
 
         this.graph[endNode[0]][endNode[1]].isEnd = true;
@@ -58,16 +55,25 @@ class Dijkstra {
             return;
         }
 
-        let dPlus1 = currentNode.d + 1;
-
         for (let i = 0; i < currentNode.neighbours.length; i++) {
             let neighbour = currentNode.neighbours[i];
             checkedNodes.push(neighbour);
 
-            if (neighbour.d > dPlus1) {
-                neighbour.d = dPlus1;
-                neighbour.pathTo = currentNode;
+            if (neighbour.dEnd == undefined) {
+                neighbour.dStart = Infinity;
+                neighbour.dEnd = hexDistanceBetween(
+                    [neighbour.row, neighbour.col],
+                    this.endNode
+                );
+            }
 
+            if (neighbour.dStart > currentNode.dStart + 1) {
+                neighbour.dStart = currentNode.dStart + 1;
+                neighbour.pathTo = currentNode;
+            }
+
+            if (neighbour.d !== neighbour.dStart + neighbour.dEnd) {
+                neighbour.d = neighbour.dStart + neighbour.dEnd;
                 if (this.minDist.includes(neighbour)) {
                     this.minDist.sort((a, b) => a.d - b.d);
                 } else {

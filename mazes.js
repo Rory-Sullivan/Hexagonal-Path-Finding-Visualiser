@@ -61,24 +61,3 @@ function radialMaze() {
     }
     animate();
 }
-
-function hexDistanceBetween(x, y) {
-    let dis, dis1, dis2;
-    let penalty;
-
-    dis1 = Math.abs(x[1] - y[1]);
-
-    if (
-        (x[1] % 2 === 0 && y[1] % 2 === 1 && x[0] < y[0]) ||
-        (x[1] % 2 === 1 && y[1] % 2 === 0 && x[0] > y[0])
-    ) {
-        penalty = 1;
-    } else {
-        penalty = 0;
-    }
-    dis2 = Math.abs(x[0] - y[0]) + Math.floor(dis1 / 2) + penalty;
-
-    dis = Math.max(dis1, dis2);
-
-    return dis;
-}
