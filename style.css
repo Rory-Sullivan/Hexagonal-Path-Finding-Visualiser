@@ -10,23 +10,23 @@ div#header {
 }
 
 div#header div#instructionsContainer {
-    width: 50%;
+    width: 25%;
     min-width: 13em;
     margin: auto;
     text-align: center;
 }
 
 .buttonsContainer {
-    width: 50%;
+    width: 25%;
     min-width: 13em;
     margin: auto;
     text-align: center;
-    padding: 5px 0px;
+    padding-bottom: 5px;
 }
 
 #canvasContainer {
     margin: auto;
-    height: 90vh;
+    height: 80vh;
 }
 
 canvas {

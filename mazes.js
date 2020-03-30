@@ -48,12 +48,17 @@ function radialMaze() {
         for (let j = 0; j < n; j++) {
             let dis = hexDistanceBetween([centreRow, centreCol], [i, j]);
             if (dis % 2 === 1) {
+                if (
+                    (i === start[0] && j === start[1]) ||
+                    (i === end[0] && j === end[1])
+                ) {
+                    continue;
+                }
                 grid[i][j] = 1;
                 hexes[i][j].fill = 'black';
             }
         }
     }
-
     animate();
 }
 
