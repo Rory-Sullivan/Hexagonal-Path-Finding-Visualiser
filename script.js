@@ -140,6 +140,17 @@ function runDijkstra() {
 
     canvas.removeEventListener('mousedown', addWallBegin);
 
+    if (d) {
+        for (let i = 0; i < m; i++) {
+            for (let j = 0; j < n; j++) {
+                let hex = hexes[i][j];
+                if (hex.fill === 'paleGreen' || hex.fill === 'lightBlue') {
+                    hex.fill = 'white';
+                }
+            }
+        }
+    }
+
     d = new Dijkstra(grid, start, end);
 
     setTimeout(animateSteps, delay);
@@ -162,8 +173,9 @@ function animateSteps() {
         } else {
             for (let i = 1; i < d.path.length - 1; i++) {
                 const node = d.path[i];
-                hexes[node.row][node.col].fill = 'LightBlue';
+                hexes[node.row][node.col].fill = 'lightBlue';
             }
+            canvas.addEventListener('mousedown', addWallBegin);
         }
     } else {
         setTimeout(animateSteps, delay);
