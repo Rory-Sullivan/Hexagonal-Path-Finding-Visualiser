@@ -186,6 +186,11 @@ function animateSteps() {
 function addStart(event) {
     start = getCursorPosition(event);
 
+    if (start[0] < 0 || start[0] > m - 1 || start[1] < 0 || start[1] > n - 1) {
+        start = [];
+        return;
+    }
+
     hexes[start[0]][start[1]].fill = 'green';
 
     animate();
@@ -197,7 +202,10 @@ function addStart(event) {
 function addEnd(event) {
     end = getCursorPosition(event);
 
-    if (end[0] === start[0] && end[1] === start[1]) {
+    if (end[0] < 0 || end[0] > m - 1 || end[1] < 0 || end[1] > n - 1) {
+        end = [];
+        return;
+    } else if (end[0] === start[0] && end[1] === start[1]) {
         end = [];
         return;
     }
@@ -212,6 +220,10 @@ function addEnd(event) {
 
 function addWallBegin(event) {
     let [row, col] = getCursorPosition(event);
+
+    if (row < 0 || row > m - 1 || col < 0 || col > n - 1) {
+        return;
+    }
 
     if (grid[row][col] == 0) {
         action = 'adding';
@@ -233,6 +245,8 @@ function addWall(event) {
         (row === start[0] && col === start[1]) ||
         (row === end[0] && col === end[1])
     ) {
+        return;
+    } else if (row < 0 || row > m - 1 || col < 0 || col > n - 1) {
         return;
     }
 
