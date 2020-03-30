@@ -137,62 +137,6 @@ function resize() {
     instructions.innerHTML = 'Select start position';
 }
 
-function runDijkstra() {
-    if (start.length === 0) {
-        window.alert('Please select a starting point');
-        return;
-    } else if (end.length === 0) {
-        window.alert('Please select an end point');
-        return;
-    }
-
-    canvas.removeEventListener('mousedown', addWallBegin);
-    instructions.innerHTML = 'Calculating...';
-
-    if (d) {
-        for (let i = 0; i < m; i++) {
-            for (let j = 0; j < n; j++) {
-                let hex = hexes[i][j];
-                if (hex.fill === 'paleGreen' || hex.fill === 'lightBlue') {
-                    hex.fill = 'white';
-                }
-            }
-        }
-    }
-
-    d = new Dijkstra(grid, start, end);
-
-    setTimeout(animateSteps, delay);
-}
-
-function animateSteps() {
-    let checkedNodes = d.step();
-    if (checkedNodes) {
-        for (let i = 0; i < checkedNodes.length; i++) {
-            const node = checkedNodes[i];
-            if (!node.isStart && !node.isEnd) {
-                hexes[node.row][node.col].fill = 'paleGreen';
-            }
-        }
-    }
-
-    if (d.pathFound) {
-        if (d.noPath) {
-            window.alert('No path possible');
-        } else {
-            for (let i = 1; i < d.path.length - 1; i++) {
-                const node = d.path[i];
-                hexes[node.row][node.col].fill = 'lightBlue';
-            }
-        }
-        canvas.addEventListener('mousedown', addWallBegin);
-        instructions.innerHTML = 'Done!';
-    } else {
-        setTimeout(animateSteps, delay);
-    }
-    animate();
-}
-
 function addStart(event) {
     start = getCursorPosition(event);
 
@@ -315,4 +259,68 @@ function reset() {
 
     canvas.addEventListener('mousedown', addStart);
     instructions.innerHTML = 'Select start position';
+}
+
+function runAlgorithm(algorithm) {
+    if (start.length === 0) {
+        window.alert('Please select a starting point');
+        return;
+    } else if (end.length === 0) {
+        window.alert('Please select an end point');
+        return;
+    }
+
+    canvas.removeEventListener('mousedown', addWallBegin);
+    instructions.innerHTML = 'Calculating...';
+
+    if (d) {
+        for (let i = 0; i < m; i++) {
+            for (let j = 0; j < n; j++) {
+                let hex = hexes[i][j];
+                if (hex.fill === 'paleGreen' || hex.fill === 'lightBlue') {
+                    hex.fill = 'white';
+                }
+            }
+        }
+    }
+
+    switch (algorithm) {
+        case 'dijkstra':
+            d = new Dijkstra(grid, start, end);
+            break;
+
+        case 'aStar':
+            d = new aStar(grid, start, end);
+            break;
+    }
+
+    setTimeout(animateSteps, delay);
+}
+
+function animateSteps() {
+    let checkedNodes = d.step();
+    if (checkedNodes) {
+        for (let i = 0; i < checkedNodes.length; i++) {
+            const node = checkedNodes[i];
+            if (!node.isStart && !node.isEnd) {
+                hexes[node.row][node.col].fill = 'paleGreen';
+            }
+        }
+    }
+
+    if (d.pathFound) {
+        if (d.noPath) {
+            window.alert('No path possible');
+        } else {
+            for (let i = 1; i < d.path.length - 1; i++) {
+                const node = d.path[i];
+                hexes[node.row][node.col].fill = 'lightBlue';
+            }
+        }
+        canvas.addEventListener('mousedown', addWallBegin);
+        instructions.innerHTML = 'Done!';
+    } else {
+        setTimeout(animateSteps, delay);
+    }
+    animate();
 }

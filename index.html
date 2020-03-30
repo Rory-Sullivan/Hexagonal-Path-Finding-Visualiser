@@ -6,7 +6,9 @@
         <title>Path Finding Visualiser</title>
         <link rel="stylesheet" href="./style.css" />
 
+        <script src="./algorithms/general.js"></script>
         <script src="./algorithms/dijkstra.js"></script>
+        <script src="./algorithms/aStar.js"></script>
         <script src="./mazes.js"></script>
         <script src="./script.js"></script>
     </head>
@@ -19,7 +21,8 @@
                 <button onclick="reset();">Reset</button>
             </div>
             <div class="buttonsContainer">
-                <button onclick="runDijkstra();">Dijkstra</button>
+                <button onclick="runAlgorithm('dijkstra');">Dijkstra</button>
+                <button onclick="runAlgorithm('aStar');">A*</button>
             </div>
 
             <div class="buttonsContainer">
