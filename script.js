@@ -292,6 +292,10 @@ function runAlgorithm(algorithm) {
         case 'aStar':
             d = new aStar(grid, start, end);
             break;
+
+        case 'biasedAStar':
+            d = new biasedAStar(grid, start, end);
+            break;
     }
 
     setTimeout(animateSteps, delay);
