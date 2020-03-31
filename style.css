@@ -1,32 +1,37 @@
 body {
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+div#appContainer {
+    display: flex;
 }
 
 div#header {
     background-color: lightblue;
+    width: 10em;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
 div#header div#instructionsContainer {
-    width: 25%;
-    min-width: 13em;
-    margin: auto;
-    text-align: center;
+    width: 10em;
+    min-height: 6em;
 }
 
-.buttonsContainer {
-    width: 25%;
-    min-width: 13em;
-    margin: auto;
-    text-align: center;
-    padding-bottom: 5px;
+div#header div#resetContainer {
+    padding-bottom: 1em;
+}
+
+div#header div.buttonsContainer {
+    border-top: white 2px solid;
+    padding-bottom: 1em;
 }
 
 #canvasContainer {
-    margin: auto;
-    height: 80vh;
+    width: 90vw;
+    min-width: 400px;
+    height: 98vh;
 }
 
 canvas {

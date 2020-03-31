@@ -31,28 +31,34 @@
         <script src="./script.js"></script>
     </head>
     <body onload="setup();">
-        <div id="header">
-            <div id="instructionsContainer">
-                <h2 id="instructions">Select start position</h2>
-            </div>
-            <div class="buttonsContainer">
-                <button onclick="reset();">Reset</button>
-            </div>
-            <div class="buttonsContainer">
-                <button onclick="runAlgorithm('dijkstra');">Dijkstra</button>
-                <button onclick="runAlgorithm('aStar');">A*</button>
+        <div id="appContainer">
+            <div id="header">
+                <div id="instructionsContainer">
+                    <h2 id="instructions">Select start position</h2>
+                </div>
+                <div id="resetContainer">
+                    <button onclick="reset();">Reset</button>
+                </div>
+                <div class="buttonsContainer">
+                    <h3>Algorithms</h3>
+                    <button onclick="runAlgorithm('dijkstra');">
+                        Dijkstra
+                    </button>
+                    <button onclick="runAlgorithm('aStar');">A*</button>
+                </div>
+
+                <div class="buttonsContainer">
+                    <h3>Mazes</h3>
+                    <button onclick="verticalMaze();">Vertical maze</button>
+                    <button onclick="horizontalMaze();">Horizontal maze</button>
+                    <button onclick="radialMaze();">Radial maze</button>
+                </div>
             </div>
 
-            <div class="buttonsContainer">
-                <button onclick="verticalMaze();">Vertical maze</button>
-                <button onclick="horizontalMaze();">Horizontal maze</button>
-                <button onclick="radialMaze();">Radial maze</button>
+            <div id="canvasContainer">
+                <canvas id="background"></canvas>
+                <canvas id="animation"></canvas>
             </div>
-        </div>
-
-        <div id="canvasContainer">
-            <canvas id="background"></canvas>
-            <canvas id="animation"></canvas>
         </div>
     </body>
 </html>
