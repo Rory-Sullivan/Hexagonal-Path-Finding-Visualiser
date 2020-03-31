@@ -74,9 +74,9 @@ maze you can alter it to your liking, adding or deleting paths. Note that the
 radial maze does not contain a path automatically you will have to make one
 after it is generated.
 
-![vertical maze](./images/verticalMaze.png)Vertical Maze
-![horizontal maze](./images/horizontalMaze.png)Horizontal Maze
-![radial maze](./images/radialMaze.png)Radial Maze
+| Vertical Maze                               | Horizontal Maze                                 | Radial Maze                             |
+| ------------------------------------------- | ----------------------------------------------- | --------------------------------------- |
+| ![vertical maze](./images/verticalMaze.png) | ![horizontal maze](./images/horizontalMaze.png) | ![radial maze](./images/radialMaze.png) |
 
 ## Analysis of algorithms
 
@@ -87,9 +87,9 @@ and so Dijkstra spends a lot of time exploring sub optimal paths where as the A*
 algorithms have an idea of which direction to head thus move more directly to
 the goal.
 
-![dijkstra open demo](./images/openDijkstra.png) Dijkstra
-![A* open demo](./images/openAStar.png)A* ![biased A* open
-demo](./images/openBiasedAStar.png)Biased A\*
+| Dijkstra                                         | A\*                                     | Biased A\*                                           |
+| ------------------------------------------------ | --------------------------------------- | ---------------------------------------------------- |
+| ![dijkstra open demo](./images/openDijkstra.png) | ![A* open demo](./images/openAStar.png) | ![biased A* open demo](./images/openBiasedAStar.png) |
 
 In these diagrams the green tiles show the search space of the algorithm while
 the blue tiles show the optimal path found by the algorithm. In general the
@@ -109,8 +109,9 @@ between the algorithms is less noticeable however this is when we may see the
 biased A\* algorithm picking a less than optimal path. Consider the images
 below.
 
-![restricted grid A*](./images/longPathAStar.png) A\*
-![restricted grid biasedA*](./images/longPathBiasedAStar.png) Biased A\*
+| A\*                                               | Biased A\*                                                    |
+| ------------------------------------------------- | ------------------------------------------------------------- |
+| ![restricted grid A*](./images/longPathAStar.png) | ![restricted grid biasedA*](./images/longPathBiasedAStar.png) |
 
 Concluding from the above the best algorithm to use depends on the situation. If
 you have a largely open grid or finding a solution quickly is more important
