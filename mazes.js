@@ -61,3 +61,24 @@ function radialMaze() {
     }
     animate();
 }
+
+function randomMaze() {
+    for (let i = 0; i < m; i++) {
+        for (let j = 0; j < n; j++) {
+            if (
+                (i === start[0] && j === start[1]) ||
+                (i === end[0] && j === end[1])
+            ) {
+                continue;
+            }
+
+            let rand = Math.floor(Math.random() * 6);
+
+            if (rand === 0) {
+                grid[i][j] = 1;
+                hexes[i][j].fill = 'black';
+            }
+        }
+    }
+    animate();
+}
