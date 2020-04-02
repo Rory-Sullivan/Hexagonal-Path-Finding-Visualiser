@@ -16,6 +16,8 @@ let grid;
 let start = [];
 let end = [];
 
+var myVar;
+
 // Document elements
 let bgCanvas, canvas;
 let bgCtx, ctx;

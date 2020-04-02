@@ -3,6 +3,7 @@ body {
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
+
 div#appContainer {
     display: flex;
 }
@@ -28,12 +29,12 @@ div#header div.buttonsContainer {
     padding-bottom: 1em;
 }
 
-#canvasContainer {
+div#canvasContainer {
     width: 90vw;
     min-width: 400px;
     height: 98vh;
 }
 
-canvas {
+div#canvasContainer canvas {
     position: absolute;
 }
