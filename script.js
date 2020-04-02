@@ -13,20 +13,20 @@ const hexYDim = Math.floor(hexSize * (Math.sqrt(3) / 2)); // y-axis dimension
 let hexes = [];
 
 // Grid matrix.  Stores information about the grid.
-let m; let
-  n; // grid size
+let m;
+let n; // grid size
 let grid;
 let start = [];
 let end = [];
 
 // Document elements
-let bgCanvas; let
-  canvas;
-let bgCtx; let
-  ctx;
+let bgCanvas;
+let canvas;
+let bgCtx;
+let ctx;
 let instructions;
-let w; let
-  h; // width and height of canvas.
+let w;
+let h; // width and height of canvas.
 
 // Action for adding or removing walls
 let action = 'adding';
@@ -72,11 +72,12 @@ function addWall(event) {
   const [row, col] = getCursorPosition(event);
 
   if (
-    (row === start[0] && col === start[1])
-          || (row === end[0] && col === end[1])
+    (row === start[0] && col === start[1]) ||
+    (row === end[0] && col === end[1])
   ) {
     return;
-  } if (row < 0 || row > m - 1 || col < 0 || col > n - 1) {
+  }
+  if (row < 0 || row > m - 1 || col < 0 || col > n - 1) {
     return;
   }
 
@@ -122,7 +123,8 @@ function addEnd(event) {
   if (end[0] < 0 || end[0] > m - 1 || end[1] < 0 || end[1] > n - 1) {
     end = [];
     return;
-  } if (end[0] === start[0] && end[1] === start[1]) {
+  }
+  if (end[0] === start[0] && end[1] === start[1]) {
     end = [];
     return;
   }
@@ -154,7 +156,6 @@ function addStart(event) {
   canvas.addEventListener('mousedown', addEnd);
   instructions.innerHTML = 'Select end position';
 }
-
 
 // eslint-disable-next-line no-unused-vars
 function reset() {
@@ -208,7 +209,8 @@ function runAlgorithm(algorithm) {
   if (start.length === 0) {
     window.alert('Please select a starting point');
     return;
-  } if (end.length === 0) {
+  }
+  if (end.length === 0) {
     window.alert('Please select an end point');
     return;
   }
@@ -246,7 +248,6 @@ function runAlgorithm(algorithm) {
 
   setTimeout(animateSteps, delay);
 }
-
 
 /**
  * Object for storing information about our hexagons.
