@@ -26,18 +26,18 @@ class Dijkstra {
   }
 
   /**
-     * Increments a step of the algorithm.
-     */
+   * Increments a step of the algorithm.
+   */
   step() {
     if (this.pathFound) {
-      return;
+      return true;
     }
 
     if (this.minDist.length === 0) {
       // No path exists
       this.noPath = true;
       this.pathFound = true;
-      return;
+      return true;
     }
 
     let currentNode = this.minDist.shift();
@@ -55,12 +55,12 @@ class Dijkstra {
         currentNode = previousNode;
       } while (!currentNode.isStart);
 
-      return;
+      return true;
     }
 
     const dPlus1 = currentNode.d + 1;
 
-    for (let i = 0; i < currentNode.neighbours.length; i++) {
+    for (let i = 0; i < currentNode.neighbours.length; i += 1) {
       const neighbour = currentNode.neighbours[i];
       checkedNodes.push(neighbour);
 
@@ -86,7 +86,7 @@ class Dijkstra {
   }
 
   addToMinDist(node) {
-    for (let i = 0; i < this.minDist.length; i++) {
+    for (let i = 0; i < this.minDist.length; i += 1) {
       if (node.d < this.minDist[i].d) {
         this.minDist.splice(i, 0, node);
         return;

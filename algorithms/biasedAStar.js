@@ -16,26 +16,27 @@ class biasedAStar {
       startNode,
       endNode,
     ); // distance from end node
-    this.graph[startNode[0]][startNode[1]].d = this.graph[startNode[0]][startNode[1]].dStart
-            + this.graph[startNode[0]][startNode[1]].dEnd * this.bias;
+    this.graph[startNode[0]][startNode[1]].d =
+      this.graph[startNode[0]][startNode[1]].dStart +
+      this.graph[startNode[0]][startNode[1]].dEnd * this.bias;
     this.addToMinDist(this.graph[startNode[0]][startNode[1]]);
 
     this.graph[endNode[0]][endNode[1]].isEnd = true;
   }
 
   /**
-     * Increments a step of the algorithm.
-     */
+   * Increments a step of the algorithm.
+   */
   step() {
     if (this.pathFound) {
-      return;
+      return true;
     }
 
     if (this.minDist.length === 0) {
       // No path exists
       this.noPath = true;
       this.pathFound = true;
-      return;
+      return true;
     }
 
     let currentNode = this.minDist.shift();
@@ -53,14 +54,14 @@ class biasedAStar {
         currentNode = previousNode;
       } while (!currentNode.isStart);
 
-      return;
+      return true;
     }
 
-    for (let i = 0; i < currentNode.neighbours.length; i++) {
+    for (let i = 0; i < currentNode.neighbours.length; i += 1) {
       const neighbour = currentNode.neighbours[i];
       checkedNodes.push(neighbour);
 
-      if (neighbour.dEnd == undefined) {
+      if (neighbour.dEnd === undefined) {
         neighbour.dStart = Infinity;
         neighbour.dEnd = hexDistanceBetween(
           [neighbour.row, neighbour.col],
@@ -93,7 +94,7 @@ class biasedAStar {
   }
 
   addToMinDist(node) {
-    for (let i = 0; i < this.minDist.length; i++) {
+    for (let i = 0; i < this.minDist.length; i += 1) {
       if (node.d < this.minDist[i].d) {
         this.minDist.splice(i, 0, node);
         return;

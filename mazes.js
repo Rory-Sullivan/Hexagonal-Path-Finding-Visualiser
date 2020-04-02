@@ -5,8 +5,8 @@ function verticalMaze() {
   for (let j = 1; j < n; j += 2) {
     for (let i = startI; i < endI; i++) {
       if (
-        (i === start[0] && j === start[1])
-                || (i === end[0] && j === end[1])
+        (i === start[0] && j === start[1]) ||
+        (i === end[0] && j === end[1])
       ) {
         continue;
       }
@@ -24,10 +24,10 @@ function horizontalMaze() {
   let endJ = n - 1;
 
   for (let i = 1; i < m; i += 2) {
-    for (let j = startJ; j < endJ; j++) {
+    for (let j = startJ; j < endJ; j += 1) {
       if (
-        (i === start[0] && j === start[1])
-                || (i === end[0] && j === end[1])
+        (i === start[0] && j === start[1]) ||
+        (i === end[0] && j === end[1])
       ) {
         continue;
       }
@@ -49,8 +49,8 @@ function radialMaze() {
       const dis = hexDistanceBetween([centreRow, centreCol], [i, j]);
       if (dis % 2 === 1) {
         if (
-          (i === start[0] && j === start[1])
-                    || (i === end[0] && j === end[1])
+          (i === start[0] && j === start[1]) ||
+          (i === end[0] && j === end[1])
         ) {
           continue;
         }
@@ -63,11 +63,11 @@ function radialMaze() {
 }
 
 function randomMaze() {
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
+  for (let i = 0; i < m; i += 1) {
+    for (let j = 0; j < n; j += 1) {
       if (
-        (i === start[0] && j === start[1])
-                || (i === end[0] && j === end[1])
+        (i === start[0] && j === start[1]) ||
+        (i === end[0] && j === end[1])
       ) {
         continue;
       }
