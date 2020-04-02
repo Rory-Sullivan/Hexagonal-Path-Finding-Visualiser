@@ -2,7 +2,7 @@
  * TODO: Description
  */
 
-/* global Dijkstra, aStar, biasedAStar */
+/* global Dijkstra, AStar, BiasedAStar */
 
 /**
  * Global variables
@@ -189,6 +189,7 @@ function animateSteps() {
 
   if (d.pathFound) {
     if (d.noPath) {
+      // eslint-disable-next-line no-alert
       window.alert('No path possible');
     } else {
       for (let i = 1; i < d.path.length - 1; i += 1) {
@@ -207,10 +208,12 @@ function animateSteps() {
 // eslint-disable-next-line no-unused-vars
 function runAlgorithm(algorithm) {
   if (start.length === 0) {
+    // eslint-disable-next-line no-alert
     window.alert('Please select a starting point');
     return;
   }
   if (end.length === 0) {
+    // eslint-disable-next-line no-alert
     window.alert('Please select an end point');
     return;
   }
@@ -235,11 +238,11 @@ function runAlgorithm(algorithm) {
       break;
 
     case 'aStar':
-      d = new aStar(grid, start, end);
+      d = new AStar(grid, start, end);
       break;
 
     case 'biasedAStar':
-      d = new biasedAStar(grid, start, end);
+      d = new BiasedAStar(grid, start, end);
       break;
 
     default:
@@ -264,7 +267,9 @@ class Hex {
     this.fill = 'white';
   }
 
-  draw(context) {
+  draw(cnt) {
+    const context = cnt;
+
     context.save();
 
     context.lineWidth = 2;
@@ -284,19 +289,6 @@ class Hex {
 
     context.restore();
   }
-}
-
-/**
- * Resizes our canvases to fit the window.
- */
-function resize() {
-  canvas.removeEventListener('mousedown', addWallBegin);
-
-  start = [];
-  end = [];
-
-  setup();
-  instructions.innerHTML = 'Select start position';
 }
 
 /**
@@ -340,5 +332,19 @@ function setup() {
   }
 
   canvas.addEventListener('mousedown', addStart);
+  // eslint-disable-next-line no-use-before-define
   window.addEventListener('resize', resize, false);
+}
+
+/**
+ * Resizes our canvases to fit the window.
+ */
+function resize() {
+  canvas.removeEventListener('mousedown', addWallBegin);
+
+  start = [];
+  end = [];
+
+  setup();
+  instructions.innerHTML = 'Select start position';
 }

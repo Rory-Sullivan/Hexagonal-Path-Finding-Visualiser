@@ -1,4 +1,6 @@
-class aStar {
+/* global Graph, hexDistanceBetween */
+
+class AStar {
   constructor(grid, startNode, endNode) {
     this.graph = new Graph(grid);
     this.endNode = endNode;
@@ -12,7 +14,7 @@ class aStar {
     this.graph[startNode[0]][startNode[1]].dStart = 0; // distance from start node
     this.graph[startNode[0]][startNode[1]].dEnd = hexDistanceBetween(
       startNode,
-      endNode,
+      endNode
     ); // distance from end node
     this.graph[startNode[0]][startNode[1]].d =
       this.graph[startNode[0]][startNode[1]].dStart +
@@ -63,7 +65,7 @@ class aStar {
         neighbour.dStart = Infinity;
         neighbour.dEnd = hexDistanceBetween(
           [neighbour.row, neighbour.col],
-          this.endNode,
+          this.endNode
         );
       }
 

@@ -4,6 +4,8 @@
  * where each node is separated by a distance of one.
  */
 
+/* global Graph */
+
 /**
  * Implements our Dijkstra algorithm.  Inputs are our hexagonal grid matrix, an
  * array representing the start node position and an array representing the end
