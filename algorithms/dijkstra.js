@@ -10,88 +10,88 @@
  * node position.
  */
 class Dijkstra {
-    constructor(grid, startNode, endNode) {
-        this.graph = new Graph(grid);
-        this.path = [];
-        this.pathFound = false;
-        this.noPath = false;
-        this.minDist = []; // Ordered list of nodes with the node of minimum
-        // distance from the start node at position zero.
+  constructor(grid, startNode, endNode) {
+    this.graph = new Graph(grid);
+    this.path = [];
+    this.pathFound = false;
+    this.noPath = false;
+    this.minDist = []; // Ordered list of nodes with the node of minimum
+    // distance from the start node at position zero.
 
-        this.graph[startNode[0]][startNode[1]].isStart = true;
-        this.graph[startNode[0]][startNode[1]].d = 0;
-        this.addToMinDist(this.graph[startNode[0]][startNode[1]]);
+    this.graph[startNode[0]][startNode[1]].isStart = true;
+    this.graph[startNode[0]][startNode[1]].d = 0;
+    this.addToMinDist(this.graph[startNode[0]][startNode[1]]);
 
-        this.graph[endNode[0]][endNode[1]].isEnd = true;
-    }
+    this.graph[endNode[0]][endNode[1]].isEnd = true;
+  }
 
-    /**
+  /**
      * Increments a step of the algorithm.
      */
-    step() {
-        if (this.pathFound) {
-            return;
-        }
-
-        if (this.minDist.length === 0) {
-            // No path exists
-            this.noPath = true;
-            this.pathFound = true;
-            return;
-        }
-
-        let currentNode = this.minDist.shift();
-        let checkedNodes = [];
-
-        if (currentNode.isEnd) {
-            // We are done calculate path and return.
-            this.pathFound = true;
-
-            this.path = [currentNode];
-
-            do {
-                let previousNode = currentNode.pathTo;
-                this.path.unshift(previousNode);
-                currentNode = previousNode;
-            } while (!currentNode.isStart);
-
-            return;
-        }
-
-        let dPlus1 = currentNode.d + 1;
-
-        for (let i = 0; i < currentNode.neighbours.length; i++) {
-            let neighbour = currentNode.neighbours[i];
-            checkedNodes.push(neighbour);
-
-            if (neighbour.d > dPlus1) {
-                neighbour.d = dPlus1;
-                neighbour.pathTo = currentNode;
-
-                if (this.minDist.includes(neighbour)) {
-                    this.minDist.sort((a, b) => a.d - b.d);
-                } else {
-                    this.addToMinDist(neighbour);
-                }
-            }
-        }
-
-        return checkedNodes;
+  step() {
+    if (this.pathFound) {
+      return;
     }
 
-    solve() {
-        do {
-            this.step();
-        } while (!this.pathFound);
+    if (this.minDist.length === 0) {
+      // No path exists
+      this.noPath = true;
+      this.pathFound = true;
+      return;
     }
 
-    addToMinDist(node) {
-        for (let i = 0; i < this.minDist.length; i++) {
-            if (node.d < this.minDist[i].d) {
-                this.minDist.splice(i, 0, node);
-                return;
-            }
-        }
-        this.minDist.push(node);
+    let currentNode = this.minDist.shift();
+    const checkedNodes = [];
+
+    if (currentNode.isEnd) {
+      // We are done calculate path and return.
+      this.pathFound = true;
+
+      this.path = [currentNode];
+
+      do {
+        const previousNode = currentNode.pathTo;
+        this.path.unshift(previousNode);
+        currentNode = previousNode;
+      } while (!currentNode.isStart);
+
+      return;
     }
+
+    const dPlus1 = currentNode.d + 1;
+
+    for (let i = 0; i < currentNode.neighbours.length; i++) {
+      const neighbour = currentNode.neighbours[i];
+      checkedNodes.push(neighbour);
+
+      if (neighbour.d > dPlus1) {
+        neighbour.d = dPlus1;
+        neighbour.pathTo = currentNode;
+
+        if (this.minDist.includes(neighbour)) {
+          this.minDist.sort((a, b) => a.d - b.d);
+        } else {
+          this.addToMinDist(neighbour);
+        }
+      }
+    }
+
+    return checkedNodes;
+  }
+
+  solve() {
+    do {
+      this.step();
+    } while (!this.pathFound);
+  }
+
+  addToMinDist(node) {
+    for (let i = 0; i < this.minDist.length; i++) {
+      if (node.d < this.minDist[i].d) {
+        this.minDist.splice(i, 0, node);
+        return;
+      }
+    }
+    this.minDist.push(node);
+  }
 }

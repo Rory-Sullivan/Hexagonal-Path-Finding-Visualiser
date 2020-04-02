@@ -1,70 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Path Finding Visualiser</title>
-        <link rel="stylesheet" href="./style.css" />
 
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="./icons/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="./icons/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="./icons/favicon-16x16.png"
-        />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Path Finding Visualiser</title>
+    <link rel="stylesheet" href="./style.css" />
 
-        <script src="./script.js"></script>
-        <script src="./algorithms/general.js"></script>
-        <script src="./algorithms/dijkstra.js"></script>
-        <script src="./algorithms/aStar.js"></script>
-        <script src="./algorithms/biasedAStar.js"></script>
-        <script src="./mazes.js"></script>
-    </head>
+    <link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./icons/favicon-16x16.png" />
 
-    <body onload="setup();">
-        <div id="appContainer">
-            <div id="header">
-                <div id="instructionsContainer">
-                    <h2 id="instructions">Select start position</h2>
-                </div>
-                <div id="resetContainer">
-                    <button onclick="reset();">Reset</button>
-                </div>
-                <div class="buttonsContainer">
-                    <h3>Algorithms</h3>
-                    <button onclick="runAlgorithm('dijkstra');">
-                        Dijkstra
-                    </button>
-                    <button onclick="runAlgorithm('aStar');">A*</button>
-                    <button onclick="runAlgorithm('biasedAStar');">
-                        Biased A*
-                    </button>
-                </div>
+    <script src="./script.js"></script>
+    <script src="./algorithms/general.js"></script>
+    <script src="./algorithms/dijkstra.js"></script>
+    <script src="./algorithms/aStar.js"></script>
+    <script src="./algorithms/biasedAStar.js"></script>
+    <script src="./mazes.js"></script>
+</head>
 
-                <div class="buttonsContainer">
-                    <h3>Mazes</h3>
-                    <button onclick="randomMaze();">Random maze</button>
-                    <button onclick="verticalMaze();">Vertical maze</button>
-                    <button onclick="horizontalMaze();">Horizontal maze</button>
-                    <button onclick="radialMaze();">Radial maze</button>
-                </div>
+<body onload="setup();">
+    <div id="appContainer">
+        <div id="header">
+            <div id="instructionsContainer">
+                <h2 id="instructions">Select start position</h2>
+            </div>
+            <div id="resetContainer">
+                <button onclick="reset();">Reset</button>
+            </div>
+            <div class="buttonsContainer">
+                <h3>Algorithms</h3>
+                <button onclick="runAlgorithm('dijkstra');">
+                    Dijkstra
+                </button>
+                <button onclick="runAlgorithm('aStar');">A*</button>
+                <button onclick="runAlgorithm('biasedAStar');">
+                    Biased A*
+                </button>
             </div>
 
-            <div id="canvasContainer">
-                <canvas id="background"></canvas>
-                <canvas id="animation"></canvas>
+            <div class="buttonsContainer">
+                <h3>Mazes</h3>
+                <button onclick="randomMaze();">Random maze</button>
+                <button onclick="verticalMaze();">Vertical maze</button>
+                <button onclick="horizontalMaze();">Horizontal maze</button>
+                <button onclick="radialMaze();">Radial maze</button>
             </div>
         </div>
-    </body>
+
+        <div id="canvasContainer">
+            <canvas id="background"></canvas>
+            <canvas id="animation"></canvas>
+        </div>
+    </div>
+</body>
+
 </html>
