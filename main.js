@@ -1,12 +1,7 @@
-/**
- * TODO: Description
- */
+import Dijkstra from './algorithms/Dijkstra';
+import AStar from './algorithms/AStar';
+import BiasedAStar from './algorithms/BiasedAStar';
 
-/* global Dijkstra, AStar, BiasedAStar */
-
-/**
- * Global variables
- * */
 // Hexagons
 const hexSize = 16; // Should be divisible by 2
 const hexYDim = Math.floor(hexSize * (Math.sqrt(3) / 2)); // y-axis dimension

@@ -1,6 +1,7 @@
-/* global Graph, hexDistanceBetween */
+import Graph from './Graph';
+import hexDistanceBetween from './hexDistanceBetween';
 
-class AStar {
+export default class AStar {
   constructor(grid, startNode, endNode) {
     this.graph = new Graph(grid);
     this.endNode = endNode;

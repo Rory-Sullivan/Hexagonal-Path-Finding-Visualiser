@@ -11,7 +11,7 @@
  * array representing the start node position and an array representing the end
  * node position.
  */
-class Dijkstra {
+export default class Dijkstra {
   constructor(grid, startNode, endNode) {
     this.graph = new Graph(grid);
     this.path = [];

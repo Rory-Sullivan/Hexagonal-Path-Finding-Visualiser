@@ -1,7 +1,7 @@
 /**
  * A class for creating nodes in a graph.
  */
-class Node {
+export default class GraphNode {
   constructor(row, col, parentGraph) {
     this.graph = parentGraph; // The graph containing this node
     this.row = row;
