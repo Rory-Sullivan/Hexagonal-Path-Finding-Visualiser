@@ -1,6 +1,7 @@
-/* globals describe, before, beforeEach, it, expect */
+/* globals describe, before, it, expect */
+import GraphNode from '../algorithms/GraphNode.js';
 
-describe('Tests for the Node() class', () => {
+describe('Tests for the GraphNode() class', () => {
   let graph1;
   let graph2;
   let graph3;
@@ -11,13 +12,13 @@ describe('Tests for the Node() class', () => {
     graph3 = [];
 
     // Single node
-    graph1.push([new Node(0, 0, graph1)]);
+    graph1.push([new GraphNode(0, 0, graph1)]);
 
     // 3 X 3 graph
     for (let i = 0; i < 3; i += 1) {
       const row = [];
       for (let j = 0; j < 3; j += 1) {
-        row.push(new Node(i, j, graph2));
+        row.push(new GraphNode(i, j, graph2));
       }
       graph2.push(row);
     }
@@ -26,7 +27,7 @@ describe('Tests for the Node() class', () => {
     for (let i = 0; i < 3; i += 1) {
       const row = [];
       for (let j = 0; j < 4; j += 1) {
-        row.push(new Node(i, j, graph3));
+        row.push(new GraphNode(i, j, graph3));
       }
       graph3.push(row);
     }
@@ -70,23 +71,19 @@ describe('Tests for the Node() class', () => {
       });
 
       it('Test 3 X 3 graph', () => {
-        for (let i = 0; i < graph2.length; i += 1) {
-          const row = graph2[i];
-          for (let j = 0; j < row.length; j += 1) {
-            const node = row[j];
+        graph2.forEach((row) => {
+          row.forEach((node) => {
             node.getNeighbours();
-          }
-        }
+          });
+        });
       });
 
       it('Test 3 X 4 graph', () => {
-        for (let i = 0; i < graph3.length; i += 1) {
-          const row = graph3[i];
-          for (let j = 0; j < row.length; j += 1) {
-            const node = row[j];
+        graph3.forEach((row) => {
+          row.forEach((node) => {
             node.getNeighbours();
-          }
-        }
+          });
+        });
       });
     });
 
@@ -315,59 +312,6 @@ describe('Tests for the Node() class', () => {
           graph2[2][0].isWall = false;
         });
       });
-    });
-  });
-});
-
-describe('Tests for the Graph class', () => {
-  let grid;
-  before('Sets up a basic grid for testing', () => {
-    grid = [
-      [0, 0, 1, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 1, 0, 0],
-      [0, 0, 1, 0, 0],
-    ];
-  });
-
-  it('new Graph() test', () => {
-    const graph = new Graph(grid);
-  });
-
-  it('Test that it returns what we expect', () => {
-    const graph = new Graph(grid);
-
-    expect(graph).to.have.lengthOf(4);
-    expect(graph[0]).to.have.lengthOf(5);
-    expect(graph[0][0]).to.be.instanceOf(Node);
-    expect(graph[3][4].neighbours).to.have.lengthOf(3);
-  });
-});
-
-describe('Tests for distance function', () => {
-  describe('Tests from [0, 0]', () => {
-    const x = [0, 0];
-
-    it('To [0, 1]', () => {
-      const y = [0, 1];
-      const dis = hexDistanceBetween(x, y);
-      expect(dis).to.equal(1);
-    });
-    it('To [1, 0]', () => {
-      const y = [0, 1];
-      const dis = hexDistanceBetween(x, y);
-      expect(dis).to.equal(1);
-    });
-    it('To [1, 2]', () => {
-      const y = [1, 2];
-      const dis = hexDistanceBetween(x, y);
-      expect(dis).to.equal(2);
-    });
-
-    it('To [2, 3]', () => {
-      const y = [2, 3];
-      const dis = hexDistanceBetween(x, y);
-      expect(dis).to.equal(4);
     });
   });
 });

@@ -15,18 +15,12 @@
     <script class="mocha-init">
       mocha.setup('bdd');
       mocha.checkLeaks();
+    </script>
+    <script class="chai-init">
       const expect = chai.expect;
     </script>
 
-    <!-- Run main files. -->
-    <script src="../algorithms/general.js"></script>
-    <script src="../algorithms/dijkstra.js"></script>
-    <script src="../algorithms/aStar.js"></script>
-
-    <!-- Run test files. -->
-    <script src="./general.test.js"></script>
-    <script src="./dijkstra.test.js"></script>
-    <script src="./aStar.test.js"></script>
+    <script type="module" src="./GraphNode.test.js"></script>
 
     <script class="mocha-exec">
       mocha.run();
