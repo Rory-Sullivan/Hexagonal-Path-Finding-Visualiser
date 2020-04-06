@@ -11,7 +11,8 @@ export default class HexTile {
   ) {
     [this.row, this.col] = gridPosition;
 
-    [this.width, this.height] = hexSize;
+    this.width = hexSize.width;
+    this.height = hexSize.height;
 
     this.isWall = isWall;
     this.isStart = isStart;
@@ -21,7 +22,8 @@ export default class HexTile {
       this.xPos = (this.col / 2) * (this.width * 3);
       this.yPos = this.height + this.row * (2 * this.height);
     } else {
-      this.xPos = hexSize * (3 / 2) + ((this.col - 1) / 2) * (hexSize * 3);
+      this.xPos =
+        this.width * (3 / 2) + ((this.col - 1) / 2) * (this.width * 3);
       this.yPos = 2 * this.height + this.row * (2 * this.height);
     }
   }

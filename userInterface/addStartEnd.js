@@ -2,7 +2,7 @@
 
 import getCursorPosition from './getCursorPosition.js';
 import { updateDisplay } from './display.js';
-import { addWallBegin } from './addWalls.js';
+import addWallBegin from './addWalls.js';
 
 function addEnd(event) {
   const [x, y] = getCursorPosition(event);
@@ -21,7 +21,7 @@ function addEnd(event) {
 
   grid[x][y].isWall = false; // just in case they click on a wall
 
-  updateDisplay(grid, animationContext);
+  updateDisplay(animationContext);
 
   animationCanvas.removeEventListener('mousedown', addEnd);
   animationCanvas.addEventListener('mousedown', addWallBegin);
@@ -42,7 +42,7 @@ export default function addStart(event) {
 
   grid[x][y].isWall = false; // just in case they click on a wall
 
-  updateDisplay(grid, animationContext);
+  updateDisplay(animationContext);
 
   animationCanvas.removeEventListener('mousedown', addStart);
   animationCanvas.addEventListener('mousedown', addEnd);

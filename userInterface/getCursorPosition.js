@@ -1,11 +1,11 @@
-/* global hexSize */
+/* global hexSize, animationCanvas */
 
 /**
  * Takes in a click event and returns the row and column of our the tile that
  * was clicked on.
  */
 export default function getCursorPosition(event) {
-  const rect = event.target.getBoundingClientRect();
+  const rect = animationCanvas.getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
 

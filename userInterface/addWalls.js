@@ -1,4 +1,4 @@
-/* global grid, animationCanvas, animationContext, instructions */
+/* global grid, animationCanvas, animationContext, animationId */
 
 import getCursorPosition from './getCursorPosition.js';
 import { updateDisplay } from './display.js';
@@ -14,7 +14,7 @@ function addWall(event) {
   ) {
     return;
   }
-  if (row < 0 || row > numRows - 1 || col < 0 || col > numCols - 1) {
+  if (row > 0 || row < numRows - 1 || col > 0 || col < numCols - 1) {
     grid[row][col].isWall = true;
   }
 }
@@ -30,14 +30,14 @@ function removeWall(event) {
   ) {
     return;
   }
-  if (row < 0 || row > numRows - 1 || col < 0 || col > numCols - 1) {
+  if (row > 0 || row < numRows - 1 || col > 0 || col < numCols - 1) {
     grid[row][col].isWall = false;
   }
 }
 
-function addWallEnd(event, animationId) {
+function addWallEnd() {
   clearInterval(animationId);
-  updateDisplay(); // one more time just in case
+  updateDisplay(animationContext); // one more time just in case
   animationCanvas.removeEventListener('mousemove', addWall);
   animationCanvas.removeEventListener('mousemove', removeWall);
   window.removeEventListener('mouseup', addWallEnd);
@@ -58,6 +58,6 @@ export default function addWallBegin(event) {
     animationCanvas.addEventListener('mousemove', removeWall);
   }
 
-  const animationId = setInterval(updateDisplay(grid, animationContext), 33);
-  window.addEventListener('mouseup', addWallEnd(animationId));
+  window.animationId = setInterval(updateDisplay, 33, animationContext);
+  window.addEventListener('mouseup', addWallEnd);
 }

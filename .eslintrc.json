@@ -5,6 +5,8 @@
   },
   "extends": ["airbnb-base", "plugin:prettier/recommended"],
   "rules": {
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    "import/extensions": ["error", "always"],
+    "no-param-reassign": "off"
   }
 }

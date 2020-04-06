@@ -1,26 +1,34 @@
+/* globals hexSize, grid, bgCanvas, bgContext, animationCanvas, animationContext, instructions */
+
 import Grid from './grid/Grid.js';
-import { addStart, addEnd } from './userInterface/addStartEnd.js';
+import addStart from './userInterface/addStartEnd.js';
 import { updateDisplay, drawBackground } from './userInterface/display.js';
-import { addWallBegin } from './userInterface/addWalls.js';
+import addWallBegin from './userInterface/addWalls.js';
 
 // Hexagons
-const hexSize = {
-  width: 16, // Should be divisible by 2
-  height: Math.floor(this.width * (Math.sqrt(3) / 2)),
-};
+window.hexSize = { width: 16 }; // Should be divisible by 2
+hexSize.height = Math.floor(hexSize.width * (Math.sqrt(3) / 2));
 
 // Grid matrix
-let grid;
+window.grid = [];
 
 // Document elements
-const bgCanvas = document.getElementById('background');
-const bgContext = bgCanvas.getContext('2d');
-const animationCanvas = document.getElementById('animation');
-const animationContext = animationCanvas.getContext('2d');
-const instructions = document.getElementById('instructions');
+window.bgCanvas = document.getElementById('background');
+window.bgContext = bgCanvas.getContext('2d');
+window.animationCanvas = document.getElementById('animation');
+window.animationContext = animationCanvas.getContext('2d');
+window.instructions = document.getElementById('instructions');
 
 // Animation
-const animationDelay = 33; // milliseconds
+window.animationDelay = 33; // milliseconds
+
+function updateGridSize(w, h) {
+  const rows = Math.floor((h - hexSize.height) / (hexSize.height * 2));
+  const cols = Math.floor((w - hexSize.width / 2) / (hexSize.width * 1.5));
+
+  // eslint-disable-next-line no-global-assign
+  grid = new Grid(rows, cols, hexSize);
+}
 
 function reset() {
   animationCanvas.removeEventListener('mousedown', addWallBegin);
@@ -31,7 +39,7 @@ function reset() {
     });
   });
 
-  updateDisplay(grid, animationContext);
+  updateDisplay(animationContext);
 
   animationCanvas.addEventListener('mousedown', addStart);
   instructions.innerHTML = 'Select start position';
@@ -48,13 +56,6 @@ function updateCanvasSize() {
   return [w, h];
 }
 
-function updateGridSize(w, h) {
-  const rows = Math.floor((h - hexSize.height) / (hexSize.height * 2));
-  const cols = Math.floor((w - hexSize.width / 2) / (hexSize.width * 1.5));
-
-  grid = new Grid(rows, cols, hexSize);
-}
-
 /**
  * Resizes our canvases to fit the window.
  */
@@ -63,25 +64,26 @@ function resize() {
 
   const [w, h] = updateCanvasSize();
   updateGridSize(w, h);
-  drawBackground(grid, bgContext);
+  drawBackground(bgContext);
 
   instructions.innerHTML = 'Select start position';
+  animationCanvas.addEventListener('mousedown', addStart);
 }
 
 /**
  * Creates the background grid for our path finding.
  */
 function setup() {
-  document.getElementById('resetButton').onclick = reset();
+  document.getElementById('resetButton').onclick = reset;
 
-  document.getElementById('dijkstraButton').onclick = reset();
+  document.getElementById('dijkstraButton').onclick = reset;
 
   const [w, h] = updateCanvasSize();
   updateGridSize(w, h);
-  drawBackground(grid, bgContext);
+  drawBackground();
 
   animationCanvas.addEventListener('mousedown', addStart);
-  window.addEventListener('resize', resize, false);
+  window.addEventListener('resize', resize);
 }
 
 setup();

@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* globals grid, bgCanvas, bgContext */
 
 function drawHexTile(tile, context) {
   context.save();
@@ -21,7 +21,7 @@ function drawHexTile(tile, context) {
   context.restore();
 }
 
-export function updateDisplay(grid, context) {
+export function updateDisplay(context) {
   grid.forEach((row) => {
     row.forEach((tile) => {
       drawHexTile(tile, context);
@@ -29,15 +29,15 @@ export function updateDisplay(grid, context) {
   });
 }
 
-export function drawBackground(grid, context) {
-  context.save();
+export function drawBackground() {
+  bgContext.save();
 
-  context.fillStyle = 'grey';
-  context.fillRect(0, 0, context.width, context.height);
+  bgContext.fillStyle = 'grey';
+  bgContext.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
 
-  context.restore();
+  bgContext.restore();
 
-  updateDisplay(grid, context);
+  updateDisplay(bgContext);
 }
 
 export function animateSteps() {
