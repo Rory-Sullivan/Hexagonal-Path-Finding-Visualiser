@@ -1,28 +1,22 @@
-import Graph from './Graph';
-import hexDistanceBetween from './hexDistanceBetween';
+import Graph from './Graph.js';
+import hexDistanceBetween from './hexDistanceBetween.js';
 
 export default class AStar {
-  constructor(grid, startNode, endNode) {
+  constructor(grid) {
     this.graph = new Graph(grid);
-    this.endNode = endNode;
     this.path = [];
     this.pathFound = false;
     this.noPath = false;
     this.minDist = []; // Ordered list of nodes with the node of minimum
     // distance at position zero.
 
-    this.graph[startNode[0]][startNode[1]].isStart = true;
-    this.graph[startNode[0]][startNode[1]].dStart = 0; // distance from start node
-    this.graph[startNode[0]][startNode[1]].dEnd = hexDistanceBetween(
-      startNode,
-      endNode
-    ); // distance from end node
-    this.graph[startNode[0]][startNode[1]].d =
-      this.graph[startNode[0]][startNode[1]].dStart +
-      this.graph[startNode[0]][startNode[1]].dEnd;
-    this.addToMinDist(this.graph[startNode[0]][startNode[1]]);
-
-    this.graph[endNode[0]][endNode[1]].isEnd = true;
+    this.graph[this.graph.start[0]][
+      this.graph.start[1]
+    ].dEnd = hexDistanceBetween(this.graph.start, this.graph.end); // distance from end node
+    this.graph[this.graph.start[0]][this.graph.start[1]].d = this.graph[
+      this.graph.start[0]
+    ][this.graph.start[1]].dEnd;
+    this.addToMinDist(this.graph[this.graph.start[0]][this.graph.start[1]]);
   }
 
   /**
@@ -30,14 +24,14 @@ export default class AStar {
    */
   step() {
     if (this.pathFound) {
-      return true;
+      return false;
     }
 
     if (this.minDist.length === 0) {
       // No path exists
       this.noPath = true;
       this.pathFound = true;
-      return true;
+      return false;
     }
 
     let currentNode = this.minDist.shift();
@@ -55,7 +49,7 @@ export default class AStar {
         currentNode = previousNode;
       } while (!currentNode.isStart);
 
-      return true;
+      return false;
     }
 
     for (let i = 0; i < currentNode.neighbours.length; i += 1) {
@@ -63,10 +57,10 @@ export default class AStar {
       checkedNodes.push(neighbour);
 
       if (neighbour.dEnd === undefined) {
-        neighbour.dStart = Infinity;
+        neighbour.d = Infinity;
         neighbour.dEnd = hexDistanceBetween(
           [neighbour.row, neighbour.col],
-          this.endNode
+          this.graph.end
         );
       }
 

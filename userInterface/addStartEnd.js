@@ -18,8 +18,7 @@ function addEnd(event) {
 
   grid.end = [x, y];
   grid[x][y].isEnd = true;
-
-  grid[x][y].isWall = false; // just in case they click on a wall
+  grid[x][y].fill = 'red';
 
   updateDisplay(animationContext);
 
@@ -39,8 +38,7 @@ export default function addStart(event) {
 
   grid.start = [x, y];
   grid[x][y].isStart = true;
-
-  grid[x][y].isWall = false; // just in case they click on a wall
+  grid[x][y].fill = 'green';
 
   updateDisplay(animationContext);
 

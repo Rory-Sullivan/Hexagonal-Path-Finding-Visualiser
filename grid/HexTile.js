@@ -2,21 +2,16 @@
  * Object for storing information about our hexagons.
  */
 export default class HexTile {
-  constructor(
-    gridPosition,
-    hexSize,
-    isWall = false,
-    isStart = false,
-    isEnd = false
-  ) {
+  constructor(gridPosition, hexSize) {
     [this.row, this.col] = gridPosition;
 
     this.width = hexSize.width;
     this.height = hexSize.height;
 
-    this.isWall = isWall;
-    this.isStart = isStart;
-    this.isEnd = isEnd;
+    this.isStart = false;
+    this.isEnd = false;
+    this.isWall = false;
+    this.fill = 'white';
 
     if (this.col % 2 === 0) {
       this.xPos = (this.col / 2) * (this.width * 3);
@@ -28,22 +23,10 @@ export default class HexTile {
     }
   }
 
-  get fill() {
-    if (this.isStart) {
-      return 'green';
-    }
-    if (this.isEnd) {
-      return 'red';
-    }
-    if (this.isWall) {
-      return 'black';
-    }
-    return 'white';
-  }
-
   reset() {
-    this.isWall = false;
     this.isStart = false;
     this.isEnd = false;
+    this.isWall = false;
+    this.fill = 'white';
   }
 }

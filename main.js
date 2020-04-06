@@ -4,6 +4,7 @@ import Grid from './grid/Grid.js';
 import addStart from './userInterface/addStartEnd.js';
 import { updateDisplay, drawBackground } from './userInterface/display.js';
 import addWallBegin from './userInterface/addWalls.js';
+import animateAlgorithm from './userInterface/animateAlgorithm.js';
 
 // Hexagons
 window.hexSize = { width: 16 }; // Should be divisible by 2
@@ -32,6 +33,9 @@ function updateGridSize(w, h) {
 
 function reset() {
   animationCanvas.removeEventListener('mousedown', addWallBegin);
+
+  grid.start = undefined;
+  grid.end = undefined;
 
   grid.forEach((row) => {
     row.forEach((tile) => {
@@ -76,7 +80,15 @@ function resize() {
 function setup() {
   document.getElementById('resetButton').onclick = reset;
 
-  document.getElementById('dijkstraButton').onclick = reset;
+  document.getElementById('dijkstraButton').onclick = () => {
+    animateAlgorithm('dijkstra');
+  };
+  document.getElementById('aStarButton').onclick = () => {
+    animateAlgorithm('aStar');
+  };
+  document.getElementById('biasedAStarButton').onclick = () => {
+    animateAlgorithm('biasedAStar');
+  };
 
   const [w, h] = updateCanvasSize();
   updateGridSize(w, h);

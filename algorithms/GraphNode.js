@@ -6,7 +6,7 @@ export default class GraphNode {
     this.graph = parentGraph; // The graph containing this node
     this.row = row;
     this.col = col;
-    this.d = Infinity; // current best known distance for this node.
+    this.dStart = Infinity; // current best known distance from the start for this node.
     this.isWall = false;
     this.isStart = false;
     this.isEnd = false;

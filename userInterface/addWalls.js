@@ -16,6 +16,7 @@ function addWall(event) {
   }
   if (row > 0 || row < numRows - 1 || col > 0 || col < numCols - 1) {
     grid[row][col].isWall = true;
+    grid[row][col].fill = 'black';
   }
 }
 
@@ -31,7 +32,10 @@ function removeWall(event) {
     return;
   }
   if (row > 0 || row < numRows - 1 || col > 0 || col < numCols - 1) {
-    grid[row][col].isWall = false;
+    if (grid[row][col].isWall) {
+      grid[row][col].isWall = false;
+      grid[row][col].fill = 'white';
+    }
   }
 }
 
@@ -53,8 +57,10 @@ export default function addWallBegin(event) {
   }
 
   if (!grid[row][col].isWall) {
+    addWall(event);
     animationCanvas.addEventListener('mousemove', addWall);
   } else {
+    removeWall(event);
     animationCanvas.addEventListener('mousemove', removeWall);
   }
 

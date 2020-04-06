@@ -1,74 +1,82 @@
-function animateSteps() {
-  const checkedNodes = d.step();
+/* globals grid, animationDelay, animationCanvas, animationContext,
+instructions */
+
+import Dijkstra from '../algorithms/Dijkstra.js';
+import AStar from '../algorithms/AStar.js';
+import BiasedAStar from '../algorithms/BiasedAStar.js';
+import { updateDisplay } from './display.js';
+import addWallBegin from './addWalls.js';
+
+function animateSteps(algorithm) {
+  const checkedNodes = algorithm.step();
   if (checkedNodes) {
-    for (let i = 0; i < checkedNodes.length; i += 1) {
-      const node = checkedNodes[i];
+    checkedNodes.forEach((node) => {
       if (!node.isStart && !node.isEnd) {
-        hexes[node.row][node.col].fill = 'paleGreen';
+        grid[node.row][node.col].fill = 'paleGreen';
       }
-    }
+    });
   }
 
-  if (d.pathFound) {
-    if (d.noPath) {
+  if (algorithm.pathFound) {
+    if (algorithm.noPath) {
       // eslint-disable-next-line no-alert
       window.alert('No path possible');
     } else {
-      for (let i = 1; i < d.path.length - 1; i += 1) {
-        const node = d.path[i];
-        hexes[node.row][node.col].fill = 'lightBlue';
-      }
+      algorithm.path.forEach((node) => {
+        if (!node.isStart && !node.isEnd) {
+          grid[node.row][node.col].fill = 'lightBlue';
+        }
+      });
     }
-    canvas.addEventListener('mousedown', addWallBegin);
+    animationCanvas.addEventListener('mousedown', addWallBegin);
     instructions.innerHTML = 'Done!';
   } else {
-    setTimeout(animateSteps, delay);
+    setTimeout(animateSteps, animationDelay, algorithm);
   }
-  animate();
+
+  updateDisplay(animationContext);
 }
 
-function animateAlgorithm(grid, algorithmName) {
-  if (start.length === 0) {
+export default function animateAlgorithm(algorithmName) {
+  if (!grid.start) {
     // eslint-disable-next-line no-alert
     window.alert('Please select a starting point');
     return;
   }
-  if (end.length === 0) {
+  if (!grid.end) {
     // eslint-disable-next-line no-alert
     window.alert('Please select an end point');
     return;
   }
 
-  canvas.removeEventListener('mousedown', addWallBegin);
+  animationCanvas.removeEventListener('mousedown', addWallBegin);
   instructions.innerHTML = 'Calculating...';
 
-  if (d) {
-    for (let i = 0; i < m; i += 1) {
-      for (let j = 0; j < n; j += 1) {
-        const hex = hexes[i][j];
-        if (hex.fill === 'paleGreen' || hex.fill === 'lightBlue') {
-          hex.fill = 'white';
-        }
+  grid.forEach((row) => {
+    row.forEach((tile) => {
+      if (tile.fill === 'paleGreen' || tile.fill === 'lightBlue') {
+        tile.fill = 'white';
       }
-    }
-  }
+    });
+  });
 
-  switch (algorithm) {
+  let algorithm;
+  switch (algorithmName) {
     case 'dijkstra':
-      d = new Dijkstra(grid, start, end);
+      algorithm = new Dijkstra(grid);
       break;
 
     case 'aStar':
-      d = new AStar(grid, start, end);
+      algorithm = new AStar(grid);
       break;
 
     case 'biasedAStar':
-      d = new BiasedAStar(grid, start, end);
+      algorithm = new BiasedAStar(grid);
       break;
 
     default:
       throw new Error('Not a valid algorithm');
   }
 
-  setTimeout(animateSteps, delay);
+  setTimeout(animateSteps, animationDelay, algorithm);
 }

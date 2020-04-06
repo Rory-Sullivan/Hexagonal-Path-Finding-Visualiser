@@ -1,10 +1,10 @@
+import Graph from './Graph.js';
+
 /**
  * An implementation of Dijksta's shortest path algorithm.  This implementation
  * finds the shortest path from a start node to an end node in a hexagonal grid
  * where each node is separated by a distance of one.
  */
-
-/* global Graph */
 
 /**
  * Implements our Dijkstra algorithm.  Inputs are our hexagonal grid matrix, an
@@ -12,7 +12,7 @@
  * node position.
  */
 export default class Dijkstra {
-  constructor(grid, startNode, endNode) {
+  constructor(grid) {
     this.graph = new Graph(grid);
     this.path = [];
     this.pathFound = false;
@@ -20,11 +20,7 @@ export default class Dijkstra {
     this.minDist = []; // Ordered list of nodes with the node of minimum
     // distance from the start node at position zero.
 
-    this.graph[startNode[0]][startNode[1]].isStart = true;
-    this.graph[startNode[0]][startNode[1]].d = 0;
-    this.addToMinDist(this.graph[startNode[0]][startNode[1]]);
-
-    this.graph[endNode[0]][endNode[1]].isEnd = true;
+    this.addToMinDist(this.graph[this.graph.start[0]][this.graph.start[1]]);
   }
 
   /**
@@ -32,14 +28,14 @@ export default class Dijkstra {
    */
   step() {
     if (this.pathFound) {
-      return true;
+      return false;
     }
 
     if (this.minDist.length === 0) {
       // No path exists
       this.noPath = true;
       this.pathFound = true;
-      return true;
+      return false;
     }
 
     let currentNode = this.minDist.shift();
@@ -57,21 +53,21 @@ export default class Dijkstra {
         currentNode = previousNode;
       } while (!currentNode.isStart);
 
-      return true;
+      return false;
     }
 
-    const dPlus1 = currentNode.d + 1;
+    const dPlus1 = currentNode.dStart + 1;
 
     for (let i = 0; i < currentNode.neighbours.length; i += 1) {
       const neighbour = currentNode.neighbours[i];
       checkedNodes.push(neighbour);
 
-      if (neighbour.d > dPlus1) {
-        neighbour.d = dPlus1;
+      if (neighbour.dStart > dPlus1) {
+        neighbour.dStart = dPlus1;
         neighbour.pathTo = currentNode;
 
         if (this.minDist.includes(neighbour)) {
-          this.minDist.sort((a, b) => a.d - b.d);
+          this.minDist.sort((a, b) => a.dStart - b.dStart);
         } else {
           this.addToMinDist(neighbour);
         }
@@ -89,7 +85,7 @@ export default class Dijkstra {
 
   addToMinDist(node) {
     for (let i = 0; i < this.minDist.length; i += 1) {
-      if (node.d < this.minDist[i].d) {
+      if (node.dStart < this.minDist[i].dStart) {
         this.minDist.splice(i, 0, node);
         return;
       }
