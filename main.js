@@ -6,6 +6,11 @@ import { updateDisplay, drawBackground } from './userInterface/display.js';
 import addWallBegin from './userInterface/addWalls.js';
 import animateAlgorithm from './userInterface/animateAlgorithm.js';
 
+import randomMaze from './mazes/randomMaze.js';
+import verticalMaze from './mazes/verticalMaze.js';
+import horizontalMaze from './mazes/horizontalMaze.js';
+import radialMaze from './mazes/radialMaze.js';
+
 // Hexagons
 window.hexSize = { width: 16 }; // Should be divisible by 2
 hexSize.height = Math.floor(hexSize.width * (Math.sqrt(3) / 2));
@@ -89,6 +94,11 @@ function setup() {
   document.getElementById('biasedAStarButton').onclick = () => {
     animateAlgorithm('biasedAStar');
   };
+
+  document.getElementById('randomMazeButton').onclick = randomMaze;
+  document.getElementById('verticalMazeButton').onclick = verticalMaze;
+  document.getElementById('horizontalMazeButton').onclick = horizontalMaze;
+  document.getElementById('radialMazeButton').onclick = radialMaze;
 
   const [w, h] = updateCanvasSize();
   updateGridSize(w, h);

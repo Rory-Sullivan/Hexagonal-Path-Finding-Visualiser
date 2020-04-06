@@ -1,22 +1,25 @@
-import hexDistanceBetween from '../algorithms/hexDistanceBetween';
+/* globals grid, animationContext */
+
+import { updateDisplay } from '../userInterface/display.js';
+import hexDistanceBetween from '../algorithms/hexDistanceBetween.js';
 
 export default function radialMaze() {
-  const centreRow = Math.floor(m / 2);
-  const centreCol = Math.floor(n / 2);
+  const centreRow = Math.floor(grid.rows / 2);
+  const centreCol = Math.floor(grid.cols / 2);
 
-  for (let i = 0; i < m; i += 1) {
-    for (let j = 0; j < n; j += 1) {
-      const dis = hexDistanceBetween([centreRow, centreCol], [i, j]);
+  grid.forEach((row) => {
+    row.forEach((tile) => {
+      const dis = hexDistanceBetween(
+        [centreRow, centreCol],
+        [tile.row, tile.col]
+      );
       if (dis % 2 === 1) {
-        if (
-          !(i === start[0] && j === start[1]) &&
-          !(i === end[0] && j === end[1])
-        ) {
-          grid[i][j] = 1;
-          hexes[i][j].fill = 'black';
+        if (!tile.isStart && !tile.isEnd) {
+          tile.isWall = true;
+          tile.fill = 'black';
         }
       }
-    }
-  }
-  animate();
+    });
+  });
+  updateDisplay(animationContext);
 }
