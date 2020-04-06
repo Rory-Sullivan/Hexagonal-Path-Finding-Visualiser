@@ -28,6 +28,19 @@ function animateSteps(algorithm) {
         }
       });
     }
+
+    const algButtonsContainer = document.getElementById('algorithmButtons');
+    for (let i = 0; i < algButtonsContainer.children.length; i += 1) {
+      const button = algButtonsContainer.children[i];
+      button.disabled = false;
+    }
+
+    const mazeButtonsContainer = document.getElementById('mazeButtons');
+    for (let i = 0; i < mazeButtonsContainer.children.length; i += 1) {
+      const button = mazeButtonsContainer.children[i];
+      button.disabled = false;
+    }
+
     animationCanvas.addEventListener('mousedown', addWallBegin);
     instructions.innerHTML = 'Done!';
   } else {
@@ -47,6 +60,18 @@ export default function animateAlgorithm(algorithmName) {
     // eslint-disable-next-line no-alert
     window.alert('Please select an end point');
     return;
+  }
+
+  const algButtonsContainer = document.getElementById('algorithmButtons');
+  for (let i = 0; i < algButtonsContainer.children.length; i += 1) {
+    const button = algButtonsContainer.children[i];
+    button.disabled = true;
+  }
+
+  const mazeButtonsContainer = document.getElementById('mazeButtons');
+  for (let i = 0; i < mazeButtonsContainer.children.length; i += 1) {
+    const button = mazeButtonsContainer.children[i];
+    button.disabled = true;
   }
 
   animationCanvas.removeEventListener('mousedown', addWallBegin);
