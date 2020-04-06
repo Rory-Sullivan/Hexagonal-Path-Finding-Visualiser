@@ -1,4 +1,5 @@
-/* globals hexSize, grid, bgCanvas, bgContext, animationCanvas, animationContext, instructions */
+/* globals hexSize, grid, bgCanvas, bgContext, animationCanvas,
+animationContext, instructions, timeoutId */
 
 import Grid from './grid/Grid.js';
 import addStart from './userInterface/addStartEnd.js';
@@ -27,6 +28,7 @@ window.instructions = document.getElementById('instructions');
 
 // Animation
 window.animationDelay = 33; // milliseconds
+window.timeoutId = null;
 
 function updateGridSize(w, h) {
   const rows = Math.floor((h - hexSize.height) / (hexSize.height * 2));
@@ -37,6 +39,19 @@ function updateGridSize(w, h) {
 }
 
 function reset() {
+  const algButtonsContainer = document.getElementById('algorithmButtons');
+  for (let i = 0; i < algButtonsContainer.children.length; i += 1) {
+    const button = algButtonsContainer.children[i];
+    button.disabled = false;
+  }
+
+  const mazeButtonsContainer = document.getElementById('mazeButtons');
+  for (let i = 0; i < mazeButtonsContainer.children.length; i += 1) {
+    const button = mazeButtonsContainer.children[i];
+    button.disabled = false;
+  }
+
+  clearTimeout(timeoutId);
   animationCanvas.removeEventListener('mousedown', addWallBegin);
 
   grid.start = undefined;

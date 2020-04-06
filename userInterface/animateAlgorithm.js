@@ -44,7 +44,7 @@ function animateSteps(algorithm) {
     animationCanvas.addEventListener('mousedown', addWallBegin);
     instructions.innerHTML = 'Done!';
   } else {
-    setTimeout(animateSteps, animationDelay, algorithm);
+    window.timeoutId = setTimeout(animateSteps, animationDelay, algorithm);
   }
 
   updateDisplay(animationContext);
@@ -103,5 +103,5 @@ export default function animateAlgorithm(algorithmName) {
       throw new Error('Not a valid algorithm');
   }
 
-  setTimeout(animateSteps, animationDelay, algorithm);
+  window.timeoutId = setTimeout(animateSteps, animationDelay, algorithm);
 }
