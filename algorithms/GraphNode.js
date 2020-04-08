@@ -13,14 +13,12 @@ export default class GraphNode {
   }
 
   /**
-   * Enables access to the neighbours property of a node.  This property is an
-   * array of all viable nodes that can be moved to from the current node.
+   * Enables access to the neighbours property of a node.
    */
   getNeighbours() {
     let neighbours = [];
 
     if (!this.isWall) {
-      // for readability
       const { row } = this;
       const { col } = this;
 
@@ -54,12 +52,11 @@ export default class GraphNode {
 
       // remove any neighbours that are actually walls
       const notWallNeighbours = [];
-      for (let i = 0; i < neighbours.length; i += 1) {
-        const node = neighbours[i];
+      neighbours.forEach((node) => {
         if (!node.isWall) {
           notWallNeighbours.push(node);
         }
-      }
+      });
       neighbours = notWallNeighbours;
     }
 

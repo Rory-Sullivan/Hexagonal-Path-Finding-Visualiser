@@ -1,15 +1,9 @@
 import Graph from './Graph.js';
 
 /**
- * An implementation of Dijksta's shortest path algorithm.  This implementation
- * finds the shortest path from a start node to an end node in a hexagonal grid
- * where each node is separated by a distance of one.
- */
-
-/**
- * Implements our Dijkstra algorithm.  Inputs are our hexagonal grid matrix, an
- * array representing the start node position and an array representing the end
- * node position.
+ * Implements the Dijkstra algorithm to find the shortest path between two
+ * points on a hexagonal grid.  Every point is assumed to have a distance of one
+ * between it.
  */
 export default class Dijkstra {
   constructor(grid) {
@@ -24,7 +18,8 @@ export default class Dijkstra {
   }
 
   /**
-   * Increments a step of the algorithm.
+   * Increments a step of the algorithm. Returns a list of the nodes considered
+   * at that step if any, otherwise false.
    */
   step() {
     if (this.pathFound) {
@@ -58,8 +53,7 @@ export default class Dijkstra {
 
     const dPlus1 = currentNode.dStart + 1;
 
-    for (let i = 0; i < currentNode.neighbours.length; i += 1) {
-      const neighbour = currentNode.neighbours[i];
+    currentNode.neighbours.forEach((neighbour) => {
       checkedNodes.push(neighbour);
 
       if (neighbour.dStart > dPlus1) {
@@ -72,7 +66,7 @@ export default class Dijkstra {
           this.addToMinDist(neighbour);
         }
       }
-    }
+    });
 
     return checkedNodes;
   }

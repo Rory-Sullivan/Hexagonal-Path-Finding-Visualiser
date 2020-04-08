@@ -1,6 +1,11 @@
 import Graph from './Graph.js';
 import hexDistanceBetween from './hexDistanceBetween.js';
 
+/**
+ * Implements a modified version of the A* algorithm.  This algorithm weights
+ * the distance to the end node with a bias.  See the read me for more
+ * details.  Every point is assumed to have a distance of one between it.
+ */
 export default class BiasedAStar {
   constructor(grid) {
     this.graph = new Graph(grid);
@@ -10,18 +15,19 @@ export default class BiasedAStar {
     this.minDist = []; // Ordered list of nodes with the node of minimum
     // distance at position zero.
 
-    this.bias = 100;
+    this.BIAS = 100;
 
     this.graph[this.graph.start[0]][
       this.graph.start[1]
     ].dEnd = hexDistanceBetween(this.graph.start, this.graph.end); // distance from end node
     this.graph[this.graph.start[0]][this.graph.start[1]].d =
-      this.graph[this.graph.start[0]][this.graph.start[1]].dEnd * this.bias;
+      this.graph[this.graph.start[0]][this.graph.start[1]].dEnd * this.BIAS;
     this.addToMinDist(this.graph[this.graph.start[0]][this.graph.start[1]]);
   }
 
   /**
-   * Increments a step of the algorithm.
+   * Increments a step of the algorithm. Returns a list of the nodes considered
+   * at that step if any, otherwise false.
    */
   step() {
     if (this.pathFound) {
@@ -53,8 +59,7 @@ export default class BiasedAStar {
       return false;
     }
 
-    for (let i = 0; i < currentNode.neighbours.length; i += 1) {
-      const neighbour = currentNode.neighbours[i];
+    currentNode.neighbours.forEach((neighbour) => {
       checkedNodes.push(neighbour);
 
       if (neighbour.dEnd === undefined) {
@@ -70,15 +75,15 @@ export default class BiasedAStar {
         neighbour.pathTo = currentNode;
       }
 
-      if (neighbour.d !== neighbour.dStart + neighbour.dEnd * this.bias) {
-        neighbour.d = neighbour.dStart + neighbour.dEnd * this.bias;
+      if (neighbour.d !== neighbour.dStart + neighbour.dEnd * this.BIAS) {
+        neighbour.d = neighbour.dStart + neighbour.dEnd * this.BIAS;
         if (this.minDist.includes(neighbour)) {
           this.minDist.sort((a, b) => a.d - b.d);
         } else {
           this.addToMinDist(neighbour);
         }
       }
-    }
+    });
 
     return checkedNodes;
   }

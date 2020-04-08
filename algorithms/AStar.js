@@ -1,6 +1,11 @@
 import Graph from './Graph.js';
 import hexDistanceBetween from './hexDistanceBetween.js';
 
+/**
+ * Implements the A* algorithm to find the shortest path between two points on
+ * a hexagonal grid.  Every point is assumed to have a distance of one between
+ * it.
+ */
 export default class AStar {
   constructor(grid) {
     this.graph = new Graph(grid);
@@ -20,7 +25,8 @@ export default class AStar {
   }
 
   /**
-   * Increments a step of the algorithm.
+   * Increments a step of the algorithm. Returns a list of the nodes considered
+   * at that step if any, otherwise false.
    */
   step() {
     if (this.pathFound) {
@@ -52,8 +58,7 @@ export default class AStar {
       return false;
     }
 
-    for (let i = 0; i < currentNode.neighbours.length; i += 1) {
-      const neighbour = currentNode.neighbours[i];
+    currentNode.neighbours.forEach((neighbour) => {
       checkedNodes.push(neighbour);
 
       if (neighbour.dEnd === undefined) {
@@ -77,7 +82,7 @@ export default class AStar {
           this.addToMinDist(neighbour);
         }
       }
-    }
+    });
 
     return checkedNodes;
   }

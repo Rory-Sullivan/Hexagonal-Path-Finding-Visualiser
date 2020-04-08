@@ -1,8 +1,7 @@
 import GraphNode from './GraphNode.js';
 
 /**
- * Makes a graph of nodes from our grid matrix.  Grid matrix values of 0
- * represent a normal node, values of 1 represent a wall.
+ * Makes a graph of nodes from our grid matrix.
  */
 export default class Graph extends Array {
   constructor(grid) {
