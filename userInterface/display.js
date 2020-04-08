@@ -1,5 +1,6 @@
-/* globals grid, bgCanvas, bgContext */
-
+/**
+ * Draws a hexagon corresponding to the given tile on the given canvas context.
+ */
 function drawHexTile(tile, context) {
   context.save();
 
@@ -21,6 +22,9 @@ function drawHexTile(tile, context) {
   context.restore();
 }
 
+/**
+ * Draws the current state of the grid onto the given canvas context.
+ */
 export function updateDisplay(context) {
   grid.forEach((row) => {
     row.forEach((tile) => {
@@ -38,33 +42,4 @@ export function drawBackground() {
   bgContext.restore();
 
   updateDisplay(bgContext);
-}
-
-export function animateSteps() {
-  const checkedNodes = d.step();
-  if (checkedNodes) {
-    for (let i = 0; i < checkedNodes.length; i += 1) {
-      const node = checkedNodes[i];
-      if (!node.isStart && !node.isEnd) {
-        hexes[node.row][node.col].fill = 'paleGreen';
-      }
-    }
-  }
-
-  if (d.pathFound) {
-    if (d.noPath) {
-      // eslint-disable-next-line no-alert
-      window.alert('No path possible');
-    } else {
-      for (let i = 1; i < d.path.length - 1; i += 1) {
-        const node = d.path[i];
-        hexes[node.row][node.col].fill = 'lightBlue';
-      }
-    }
-    canvas.addEventListener('mousedown', addWallBegin);
-    instructions.innerHTML = 'Done!';
-  } else {
-    setTimeout(animateSteps, delay);
-  }
-  animate();
 }

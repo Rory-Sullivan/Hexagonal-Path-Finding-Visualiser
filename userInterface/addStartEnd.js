@@ -1,5 +1,3 @@
-/* global grid, animationCanvas, animationContext, instructions */
-
 import getCursorPosition from './getCursorPosition.js';
 import { updateDisplay } from './display.js';
 import addWallBegin from './addWalls.js';
@@ -9,9 +7,11 @@ function addEnd(event) {
   const numRows = grid.rows;
   const numCols = grid.cols;
 
+  // Check if the click was on the canvas but outside the grid.
   if (x < 0 || x > numRows - 1 || y < 0 || y > numCols - 1) {
     return;
   }
+  // Check if the start node was clicked.
   if (x === grid.start[0] && y === grid.start[1]) {
     return;
   }
@@ -32,6 +32,7 @@ export default function addStart(event) {
   const numRows = grid.rows;
   const numCols = grid.cols;
 
+  // Check if the click was on the canvas but outside the grid.
   if (x < 0 || x > numRows - 1 || y < 0 || y > numCols - 1) {
     return;
   }

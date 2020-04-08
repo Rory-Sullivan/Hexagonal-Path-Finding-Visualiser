@@ -2,7 +2,7 @@ import Grid from './grid/Grid.js';
 import addStart from './userInterface/addStartEnd.js';
 import { updateDisplay, drawBackground } from './userInterface/display.js';
 import addWallBegin from './userInterface/addWalls.js';
-import animateAlgorithm from './userInterface/animateAlgorithm.js';
+import animateAlgorithmBegin from './userInterface/animateAlgorithm.js';
 
 import randomMaze from './mazes/randomMaze.js';
 import verticalMaze from './mazes/verticalMaze.js';
@@ -96,13 +96,13 @@ function setup() {
   document.getElementById('resetButton').onclick = reset;
 
   document.getElementById('dijkstraButton').onclick = () => {
-    animateAlgorithm('dijkstra');
+    animateAlgorithmBegin('dijkstra');
   };
   document.getElementById('aStarButton').onclick = () => {
-    animateAlgorithm('aStar');
+    animateAlgorithmBegin('aStar');
   };
   document.getElementById('biasedAStarButton').onclick = () => {
-    animateAlgorithm('biasedAStar');
+    animateAlgorithmBegin('biasedAStar');
   };
 
   document.getElementById('randomMazeButton').onclick = randomMaze;
