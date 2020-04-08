@@ -29,5 +29,43 @@
     "eslint-plugin-prettier": "^3.1.2",
     "mocha": "^7.1.1",
     "prettier": "^2.0.2"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "es6": true
+    },
+    "extends": [
+      "airbnb-base",
+      "plugin:prettier/recommended"
+    ],
+    "globals": {
+      "hexSize": "readonly"
+    },
+    "rules": {
+      "no-unused-vars": "warn",
+      "import/extensions": [
+        "error",
+        "always"
+      ],
+      "no-param-reassign": "off"
+    },
+    "overrides": [
+      {
+        "files": [
+          "*.test.js"
+        ],
+        "env": {
+          "mocha": true
+        },
+        "globals": {
+          "expect": "readonly"
+        },
+        "rules": {
+          "func-names": "off",
+          "prefer-arrow-callback": "off"
+        }
+      }
+    ]
   }
 }
