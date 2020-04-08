@@ -1,5 +1,3 @@
-/* globals grid, animationContext */
-
 import { updateDisplay } from '../userInterface/display.js';
 
 export default function randomMaze() {
@@ -18,5 +16,6 @@ export default function randomMaze() {
       }
     });
   });
+
   updateDisplay(animationContext);
 }

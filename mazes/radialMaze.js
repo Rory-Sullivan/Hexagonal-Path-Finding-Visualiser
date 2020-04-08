@@ -1,8 +1,10 @@
-/* globals grid, animationContext */
-
 import { updateDisplay } from '../userInterface/display.js';
 import hexDistanceBetween from '../algorithms/hexDistanceBetween.js';
 
+/**
+ * Draws a maze of concentric rings from the centre of the grid.  Note that a
+ * path through the maze is not included.
+ */
 export default function radialMaze() {
   const centreRow = Math.floor(grid.rows / 2);
   const centreCol = Math.floor(grid.cols / 2);

@@ -1,5 +1,3 @@
-/* globals grid, animationContext */
-
 import { updateDisplay } from '../userInterface/display.js';
 
 export default function verticalMaze() {
