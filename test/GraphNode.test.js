@@ -1,12 +1,13 @@
-/* globals describe, before, it, expect */
+import 'chai/register-expect.js';
+
 import GraphNode from '../algorithms/GraphNode.js';
 
-describe('Tests for the GraphNode() class', () => {
+describe('Tests for the GraphNode() class', function () {
   let graph1;
   let graph2;
   let graph3;
 
-  before('Set up three graphs of nodes', () => {
+  before('Set up three graphs of nodes', function () {
     graph1 = [];
     graph2 = [];
     graph3 = [];
@@ -33,14 +34,14 @@ describe('Tests for the GraphNode() class', () => {
     }
   });
 
-  describe('Test we can access all nodes', () => {
-    it('Test single node', () => {
+  describe('Test we can access all nodes', function () {
+    it('Test single node', function () {
       const node = graph1[0][0];
       expect(node.row).to.equal(0);
       expect(node.col).to.equal(0);
     });
 
-    it('Test 3 X 3 graph', () => {
+    it('Test 3 X 3 graph', function () {
       for (let i = 0; i < graph2.length; i += 1) {
         const row = graph2[i];
         for (let j = 0; j < row.length; j += 1) {
@@ -51,7 +52,7 @@ describe('Tests for the GraphNode() class', () => {
       }
     });
 
-    it('Test 3 X 4 graph', () => {
+    it('Test 3 X 4 graph', function () {
       for (let i = 0; i < graph3.length; i += 1) {
         const row = graph3[i];
         for (let j = 0; j < row.length; j += 1) {
@@ -63,14 +64,14 @@ describe('Tests for the GraphNode() class', () => {
     });
   });
 
-  describe('Tests for the getNeighbours() method and neighbours property', () => {
-    describe('Test method executes on all nodes', () => {
-      it('Test single node', () => {
+  describe('Tests for the getNeighbours() method and neighbours property', function () {
+    describe('Test method executes on all nodes', function () {
+      it('Test single node', function () {
         const node = graph1[0][0];
         node.getNeighbours();
       });
 
-      it('Test 3 X 3 graph', () => {
+      it('Test 3 X 3 graph', function () {
         graph2.forEach((row) => {
           row.forEach((node) => {
             node.getNeighbours();
@@ -78,7 +79,7 @@ describe('Tests for the GraphNode() class', () => {
         });
       });
 
-      it('Test 3 X 4 graph', () => {
+      it('Test 3 X 4 graph', function () {
         graph3.forEach((row) => {
           row.forEach((node) => {
             node.getNeighbours();
@@ -87,8 +88,8 @@ describe('Tests for the GraphNode() class', () => {
       });
     });
 
-    describe('Test return values are correct for all cases', () => {
-      it('Test an inner node from column 1', () => {
+    describe('Test return values are correct for all cases', function () {
+      it('Test an inner node from column 1', function () {
         const node = graph2[1][1];
         node.getNeighbours();
 
@@ -107,7 +108,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(6);
       });
 
-      it('Test an inner node from column 2', () => {
+      it('Test an inner node from column 2', function () {
         const node = graph3[1][2];
         node.getNeighbours();
 
@@ -126,7 +127,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(6);
       });
 
-      it('Test a first row, column 1 node from 3 X 3 graph', () => {
+      it('Test a first row, column 1 node from 3 X 3 graph', function () {
         const node = graph2[0][1];
         node.getNeighbours();
 
@@ -143,7 +144,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(5);
       });
 
-      it('Test a first row, column 2 node from 3 X 4 graph', () => {
+      it('Test a first row, column 2 node from 3 X 4 graph', function () {
         const node = graph3[0][2];
         node.getNeighbours();
 
@@ -156,7 +157,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(3);
       });
 
-      it('Test a last row, column 1 node from 3 X 3 graph', () => {
+      it('Test a last row, column 1 node from 3 X 3 graph', function () {
         const node = graph2[2][1];
         node.getNeighbours();
 
@@ -169,7 +170,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(3);
       });
 
-      it('Test a last row, column 2 node from 3 X 4 graph', () => {
+      it('Test a last row, column 2 node from 3 X 4 graph', function () {
         const node = graph3[2][2];
         node.getNeighbours();
 
@@ -186,7 +187,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(5);
       });
 
-      it('Test a left column node from 3 X 3 graph', () => {
+      it('Test a left column node from 3 X 3 graph', function () {
         const node = graph2[1][0];
         node.getNeighbours();
 
@@ -201,7 +202,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(4);
       });
 
-      it('Test a right column node from 3 X 3 graph', () => {
+      it('Test a right column node from 3 X 3 graph', function () {
         const node = graph2[1][2];
         node.getNeighbours();
 
@@ -216,7 +217,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(4);
       });
 
-      it('Test a right column node from 3 X 4 graph', () => {
+      it('Test a right column node from 3 X 4 graph', function () {
         const node = graph3[1][3];
         node.getNeighbours();
 
@@ -231,7 +232,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(4);
       });
 
-      it('Test the top-left node of 3 X 3 graph', () => {
+      it('Test the top-left node of 3 X 3 graph', function () {
         const node = graph2[0][0];
         node.getNeighbours();
 
@@ -242,7 +243,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(2);
       });
 
-      it('Test the bottom-right node of 3 X 3 graph', () => {
+      it('Test the bottom-right node of 3 X 3 graph', function () {
         const node = graph2[2][2];
         node.getNeighbours();
 
@@ -255,7 +256,7 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(3);
       });
 
-      it('Test the bottom-right node of 3 X 4 graph', () => {
+      it('Test the bottom-right node of 3 X 4 graph', function () {
         const node = graph3[2][3];
         node.getNeighbours();
 
@@ -266,8 +267,8 @@ describe('Tests for the GraphNode() class', () => {
         expect(node.neighbours).to.have.lengthOf(2);
       });
 
-      describe('Tests for wall functionality', () => {
-        it('Test walls are not included as neighbours', () => {
+      describe('Tests for wall functionality', function () {
+        it('Test walls are not included as neighbours', function () {
           const node = graph2[1][1];
           graph2[2][2].isWall = true;
           node.getNeighbours();
@@ -287,7 +288,7 @@ describe('Tests for the GraphNode() class', () => {
           graph2[2][2].isWall = false;
         });
 
-        it('Test walls have no neighbours', () => {
+        it('Test walls have no neighbours', function () {
           const node = graph2[1][1];
           node.isWall = true;
           node.getNeighbours();
@@ -297,7 +298,7 @@ describe('Tests for the GraphNode() class', () => {
           graph2[2][2].isWall = false;
         });
 
-        it('Test node with walls on three sides', () => {
+        it('Test node with walls on three sides', function () {
           const node = graph2[1][0];
           graph2[0][1].isWall = true;
           graph2[1][1].isWall = true;

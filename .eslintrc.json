@@ -8,5 +8,20 @@
     "no-unused-vars": "warn",
     "import/extensions": ["error", "always"],
     "no-param-reassign": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["*.test.js"],
+      "env": {
+        "mocha": true
+      },
+      "globals": {
+        "expect": "readonly"
+      },
+      "rules": {
+          "func-names": "off",
+          "prefer-arrow-callback": "off"
+       }
+    }
+  ]
 }
