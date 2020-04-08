@@ -40,7 +40,15 @@
       "plugin:prettier/recommended"
     ],
     "globals": {
-      "hexSize": "readonly"
+      "hexSize": "readonly",
+      "grid": "writable",
+      "animationDelay": "readonly",
+      "timeoutId": "writable",
+      "bgCanvas": "readonly",
+      "bgContext": "readonly",
+      "animationCanvas": "readonly",
+      "animationContext": "readonly",
+      "instructions": "readonly"
     },
     "rules": {
       "no-unused-vars": "warn",

@@ -1,6 +1,3 @@
-/* globals hexSize, grid, bgCanvas, bgContext, animationCanvas,
-animationContext, instructions, timeoutId */
-
 import Grid from './grid/Grid.js';
 import addStart from './userInterface/addStartEnd.js';
 import { updateDisplay, drawBackground } from './userInterface/display.js';
@@ -12,12 +9,17 @@ import verticalMaze from './mazes/verticalMaze.js';
 import horizontalMaze from './mazes/horizontalMaze.js';
 import radialMaze from './mazes/radialMaze.js';
 
-// Hexagons
+// Hexagons. Controls the size in pixels of the hexagons.
 window.hexSize = { width: 16 }; // Should be divisible by 2
 hexSize.height = Math.floor(hexSize.width * (Math.sqrt(3) / 2));
 
-// Grid matrix
+// Grid matrix. Stores information about the hex grid and is fed into the
+// algorithms.
 window.grid = [];
+
+// Animation
+window.animationDelay = 33; // milliseconds
+window.timeoutId = null;
 
 // Document elements
 window.bgCanvas = document.getElementById('background');
@@ -26,32 +28,45 @@ window.animationCanvas = document.getElementById('animation');
 window.animationContext = animationCanvas.getContext('2d');
 window.instructions = document.getElementById('instructions');
 
-// Animation
-window.animationDelay = 33; // milliseconds
-window.timeoutId = null;
+function updateCanvasSize() {
+  const w = document.getElementById('canvasContainer').offsetWidth;
+  const h = document.getElementById('canvasContainer').offsetHeight;
+  bgCanvas.width = w;
+  bgCanvas.height = h;
+  animationCanvas.width = w;
+  animationCanvas.height = h;
 
-function updateGridSize(w, h) {
-  const rows = Math.floor((h - hexSize.height) / (hexSize.height * 2));
-  const cols = Math.floor((w - hexSize.width / 2) / (hexSize.width * 1.5));
+  return [w, h];
+}
+
+function updateGridSize(canvasWidth, canvasHeight) {
+  const rows = Math.floor(
+    (canvasHeight - hexSize.height) / (hexSize.height * 2)
+  );
+  const cols = Math.floor(
+    (canvasWidth - hexSize.width / 2) / (hexSize.width * 1.5)
+  );
 
   // eslint-disable-next-line no-global-assign
   grid = new Grid(rows, cols, hexSize);
 }
 
 function reset() {
+  // Enable buttons. May be disabled if an algorithm is running.
   const algButtonsContainer = document.getElementById('algorithmButtons');
   for (let i = 0; i < algButtonsContainer.children.length; i += 1) {
     const button = algButtonsContainer.children[i];
     button.disabled = false;
   }
-
   const mazeButtonsContainer = document.getElementById('mazeButtons');
   for (let i = 0; i < mazeButtonsContainer.children.length; i += 1) {
     const button = mazeButtonsContainer.children[i];
     button.disabled = false;
   }
 
+  // Stop animation of an algorithm. One may be running.
   clearTimeout(timeoutId);
+
   animationCanvas.removeEventListener('mousedown', addWallBegin);
 
   grid.start = undefined;
@@ -69,34 +84,14 @@ function reset() {
   instructions.innerHTML = 'Select start position';
 }
 
-function updateCanvasSize() {
-  const w = document.getElementById('canvasContainer').offsetWidth;
-  const h = document.getElementById('canvasContainer').offsetHeight;
-  bgCanvas.width = w;
-  bgCanvas.height = h;
-  animationCanvas.width = w;
-  animationCanvas.height = h;
-
-  return [w, h];
-}
-
-/**
- * Resizes our canvases to fit the window.
- */
 function resize() {
-  animationCanvas.removeEventListener('mousedown', addWallBegin);
-
   const [w, h] = updateCanvasSize();
   updateGridSize(w, h);
   drawBackground(bgContext);
 
-  instructions.innerHTML = 'Select start position';
-  animationCanvas.addEventListener('mousedown', addStart);
+  reset();
 }
 
-/**
- * Creates the background grid for our path finding.
- */
 function setup() {
   document.getElementById('resetButton').onclick = reset;
 
