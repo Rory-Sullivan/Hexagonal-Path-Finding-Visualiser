@@ -17,7 +17,7 @@
     "type": "git",
     "url": "git+https://github.com/Rory-Sullivan/Hexagonal-Path-Finding-Visualiser.git"
   },
-  "author": "Rory Sullivan",
+  "author": "Rory Sullivan <codingrory@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Rory-Sullivan/Hexagonal-Path-Finding-Visualiser/issues"
