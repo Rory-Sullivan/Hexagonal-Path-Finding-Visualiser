@@ -2,12 +2,15 @@
   "name": "hexagonalpathfindingvisualiser",
   "version": "1.0.0",
   "description": "Visualise path finding algorithms on a hexagonal grid.",
-  "main": "main.js",
+  "browser": "index.html",
   "type": "module",
   "directories": {
     "test": "tests"
   },
   "scripts": {
+    "format_check": "prettier -c **/*.js",
+    "lint": "eslint .",
+    "pretest": "npm run format_check && npm run lint",
     "test": "mocha"
   },
   "repository": {
