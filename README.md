@@ -52,9 +52,9 @@ length of the path to determine which path to consider next we estimate the
 distance of the path. This is done by adding the current length of the path to
 an estimate of how far the path is from the end. We estimate this distance by
 looking at how many squares we would need to go through to get to the end if
-there were no walls this is done using a metric similar to the
+there were no walls. This is done using a metric similar to the
 [taxicab distance](https://en.wikipedia.org/wiki/Taxicab_geometry) but for
-hexagonal grids. With this metric A\* guarantees finding the shortest path.
+hexagonal grids. With this metric, A\* guarantees finding the shortest path.
 
 For my modified version of the A\* algorithm I use the same distance metric as
 above but multiply it by a bias. This bias means that paths which get closer to
@@ -71,7 +71,7 @@ All algorithms will find a path if one exists.
 I included three mazes which you can auto generate onto the grid. A maze of
 vertical lines, a maze of horizontal lines and a radial maze. After generating a
 maze you can alter it to your liking, adding or deleting paths. Note that the
-radial maze does not contain a path automatically you will have to make one
+radial maze does not contain a path automatically, you will have to make one
 after it is generated.
 
 | Vertical Maze                               | Horizontal Maze                                 | Radial Maze                             |
@@ -80,28 +80,28 @@ after it is generated.
 
 ## Analysis of algorithms
 
-In general A* will out perform Dijkstra and the biased A* will out perform A*.
-This is particularly the case when the grid is largely open with few wall, see
-the images below. This is due to the fact that there are a lot of possible paths
-and so Dijkstra spends a lot of time exploring sub optimal paths where as the A*
-algorithms have an idea of which direction to head thus move more directly to
-the goal.
+In general, A* will out perform Dijkstra and the biased A* will out perform A*.
+This is particularly noticeable when the grid is largely open with few walls,
+see the images below. This is due to the fact that there are a lot of possible
+paths and so Dijkstra spends a lot of time exploring sub optimal paths whereas
+the A* algorithms have an idea of which direction to head and thus move more
+directly to the goal.
 
 | Dijkstra                                         | A\*                                     | Biased A\*                                           |
 | ------------------------------------------------ | --------------------------------------- | ---------------------------------------------------- |
 | ![dijkstra open demo](./images/openDijkstra.png) | ![A* open demo](./images/openAStar.png) | ![biased A* open demo](./images/openBiasedAStar.png) |
 
 In these diagrams the green tiles show the search space of the algorithm while
-the blue tiles show the optimal path found by the algorithm. In general the
+the blue tiles show the optimal path found by the algorithm. In general, the
 larger the search space of an algorithm the less efficient it is. We can see
 that all algorithms find the optimal path and that the search space of A* is
 much smaller than Dijkstra and the biased A* is smaller again.
 
 It is worth noting that the algorithms are slowed down drastically for the
-purposes the animation in this project. The grid sizes here are sufficiently
+purposes of the animation in this project. The grid sizes here are sufficiently
 small that any of these algorithms could solve the problem in a fraction of a
 second. Also on much larger grids the efficiency of the algorithm is determined
-by more than just its search space we would also need to consider how we are
+by more than just its search space, we would also need to consider how we are
 searching for the path of least distance as well as space efficiency.
 
 In more restricted grids with fewer possible paths the performance difference
@@ -116,5 +116,5 @@ below.
 Concluding from the above the best algorithm to use depends on the situation. If
 you have a largely open grid or finding a solution quickly is more important
 than finding the shortest path then the biased A* algorithm is most likely the
-best option whereas if you are in a more restricted grid or finding the shortest
-path is imperative then A* is probably the way to go.
+best option, whereas if you are in a more restricted grid or finding the
+shortest path is imperative then A* is probably the way to go.
