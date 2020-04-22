@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Path Finding Visualiser</title>
     <link rel="stylesheet" href="./style.css" />
+    <link rel="preload" href="./images/tutorial.png" as="image" />
 
     <link
       rel="apple-touch-icon"
@@ -35,24 +36,36 @@
           <button id="resetButton">Reset</button>
         </div>
         <div class="buttonsContainer" id="algorithmButtons">
-          <h3>Algorithms</h3>
+          <h3>Start Algorithm</h3>
           <button id="dijkstraButton">Dijkstra</button>
           <button id="aStarButton">A*</button>
           <button id="biasedAStarButton">Biased A*</button>
         </div>
 
         <div class="buttonsContainer" id="mazeButtons">
-          <h3>Mazes</h3>
+          <h3>Add a Maze</h3>
           <button id="randomMazeButton">Random maze</button>
           <button id="verticalMazeButton">Vertical maze</button>
           <button id="horizontalMazeButton">Horizontal maze</button>
           <button id="radialMazeButton">Radial maze</button>
+        </div>
+
+        <div class="buttonsContainer" id="tutorialButton">
+          <h3>Not sure what to do?</h3>
+          <button id="tutorialButton">Click here</button>
         </div>
       </div>
 
       <div id="canvasContainer">
         <canvas id="background"></canvas>
         <canvas id="animation"></canvas>
+      </div>
+    </div>
+
+    <div id="tutorial" class="modal">
+      <div class="modalContent">
+        <span id="closeTutorial" class="close">&times;</span>
+        <img src="./images/tutorial.png" alt="Tutorial" />
       </div>
     </div>
 

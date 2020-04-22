@@ -110,6 +110,19 @@ function setup() {
   document.getElementById('horizontalMazeButton').onclick = horizontalMaze;
   document.getElementById('radialMazeButton').onclick = radialMaze;
 
+  document.getElementById('tutorialButton').onclick = () => {
+    document.getElementById('tutorial').style.display = 'block';
+  };
+  document.getElementById('closeTutorial').onclick = () => {
+    document.getElementById('tutorial').style.display = 'none';
+  };
+  window.onclick = (event) => {
+    const tutorial = document.getElementById('tutorial');
+    if (event.target === tutorial) {
+      tutorial.style.display = 'none';
+    }
+  };
+
   const [w, h] = updateCanvasSize();
   updateGridSize(w, h);
   drawBackground();
