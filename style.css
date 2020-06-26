@@ -29,6 +29,16 @@ div#header div.buttonsContainer {
     padding-bottom: 1em;
 }
 
+div.logo {
+    padding-top: 1em;
+}
+
+div.logo img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 div#canvasContainer {
     width: 90vw;
     min-width: 400px;
